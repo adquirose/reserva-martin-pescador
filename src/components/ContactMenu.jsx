@@ -224,8 +224,12 @@ const ContactMenu = () => {
                 src={grupoMartinPescadorLogo}
                 alt="Grupo Martín Pescador"
                 sx={{
-                  maxHeight: '32px',
-                  width: 'auto'
+                  maxHeight: '60px',
+                  width: 'auto',
+                  backgroundColor: '#1976d2', // Fondo azul para contrastar con logo blanco
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  filter: 'brightness(1.1)' // Realzar el logo
                 }}
               />
             </Box>

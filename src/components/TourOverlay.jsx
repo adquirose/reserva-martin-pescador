@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from './Logo';
 import ContactMenu from './ContactMenu';
+import MapboxRadar from './MapboxRadar';
 
 const TourOverlay = () => {
   return (
@@ -34,6 +35,11 @@ const TourOverlay = () => {
             width: 'auto'
           }}
         />
+      </div>
+
+      {/* Mapa radar de Mapbox */}
+      <div style={{ pointerEvents: 'auto' }}>
+        <MapboxRadar />
       </div>
     </div>
   );

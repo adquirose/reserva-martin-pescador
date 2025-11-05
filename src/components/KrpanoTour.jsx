@@ -8,6 +8,73 @@ const KrpanoTour = () => {
   const [error, setError] = useState(null);
   const containerId = useRef('krpano-container-' + Math.random().toString(36).substr(2, 9));
 
+  // Función para configurar los eventos de Krpano que se comunicarán con el mapa
+  const setupKrpanoEvents = (krpano) => {
+    // Evento cuando cambia la escena
+    krpano.addEventListener('onxmlcomplete', () => {
+      const currentScene = krpano.get('xml.scene');
+      if (currentScene) {
+        // Disparar evento personalizado para el mapa
+        window.dispatchEvent(new CustomEvent('krpano-scene-change', {
+          detail: { scene: currentScene }
+        }));
+      }
+    });
+
+    // Evento cuando cambia la vista (dirección de la cámara)
+    const updateViewDirection = () => {
+      try {
+        const ath = krpano.get('view.hlookat'); // Dirección horizontal
+        const atv = krpano.get('view.vlookat'); // Dirección vertical
+        const fov = krpano.get('view.fov');     // Campo de visión
+        const currentScene = krpano.get('xml.scene');
+
+        if (ath !== null && atv !== null && fov !== null) {
+          window.dispatchEvent(new CustomEvent('krpano-view-change', {
+            detail: { 
+              ath: parseFloat(ath), 
+              atv: parseFloat(atv), 
+              fov: parseFloat(fov),
+              scene: currentScene
+            }
+          }));
+        }
+      } catch (error) {
+        console.warn('Error obteniendo dirección de vista:', error);
+      }
+    };
+
+    // Actualizar dirección cada 100ms mientras se mueve la vista
+    let viewUpdateInterval;
+    krpano.addEventListener('onviewchange', () => {
+      if (viewUpdateInterval) {
+        clearInterval(viewUpdateInterval);
+      }
+      viewUpdateInterval = setInterval(updateViewDirection, 100);
+      
+      // Parar después de 1 segundo de inactividad
+      setTimeout(() => {
+        if (viewUpdateInterval) {
+          clearInterval(viewUpdateInterval);
+          viewUpdateInterval = null;
+        }
+      }, 1000);
+    });
+
+    // También actualizar cuando se carga una nueva escena
+    krpano.addEventListener('onloadcomplete', () => {
+      setTimeout(() => {
+        const currentScene = krpano.get('xml.scene');
+        if (currentScene) {
+          window.dispatchEvent(new CustomEvent('krpano-scene-change', {
+            detail: { scene: currentScene }
+          }));
+          updateViewDirection();
+        }
+      }, 100);
+    });
+  };
+
   useEffect(() => {
     // Función para cargar el script de Krpano
     const loadKrpanoScript = () => {
@@ -60,6 +127,9 @@ const KrpanoTour = () => {
               krpanoInstance.current = krpano;
               setLoading(false);
               console.log('Krpano tour cargado exitosamente');
+              
+              // Configurar eventos para sincronizar con el mapa
+              setupKrpanoEvents(krpano);
             },
             onerror: (errorMsg) => {
               console.error('Error de Krpano:', errorMsg);
