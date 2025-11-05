@@ -2,7 +2,6 @@ import React from 'react';
 import { Box } from '@mui/material';
 import logoImage from '../assets/logo.png';
 import logo1Image from '../assets/logo1.png';
-import logoWsImage from '../assets/logo-ws.png';
 
 const Logo = ({ 
   variant = 'default', 
@@ -13,8 +12,6 @@ const Logo = ({
   // Seleccionar la imagen del logo según la variante
   const getLogoSrc = () => {
     switch (variant) {
-      case 'white':
-        return logoWsImage;
       case 'alt':
         return logo1Image;
       default:

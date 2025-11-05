@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
-import BrandingCard from './BrandingCard';
 
 const KrpanoTour = () => {
   const krpanoRef = useRef(null);
@@ -119,7 +118,7 @@ const KrpanoTour = () => {
         }}
       />
 
-      {/* Pantalla de carga con branding */}
+      {/* Pantalla de carga */}
       {loading && (
         <Box
           sx={{
@@ -132,32 +131,16 @@ const KrpanoTour = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
-            background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+            backgroundColor: '#000000',
+            color: '#ffffff',
             zIndex: 1001
           }}
         >
-          <BrandingCard 
-            size="large"
-            variant="white"
-            sx={{ mb: 4, maxWidth: 400 }}
-          />
-          
-          <CircularProgress 
-            size={60} 
-            sx={{ 
-              color: '#ffffff', 
-              mb: 3,
-              '& .MuiCircularProgress-circle': {
-                strokeLinecap: 'round',
-              }
-            }} 
-          />
-          
-          <Typography variant="h6" sx={{ mb: 2, color: '#ffffff', fontWeight: 500 }}>
+          <CircularProgress size={60} sx={{ color: '#ffffff', mb: 3 }} />
+          <Typography variant="h6" sx={{ mb: 2 }}>
             Cargando Tour Virtual...
           </Typography>
-          <Typography variant="body2" sx={{ opacity: 0.8, color: '#ffffff' }}>
+          <Typography variant="body2" sx={{ opacity: 0.7 }}>
             Por favor espera mientras se cargan las imágenes 360°
           </Typography>
         </Box>
