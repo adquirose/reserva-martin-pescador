@@ -1,9 +1,7 @@
 import React from 'react';
+import Logo from './Logo';
 
 const TourOverlay = () => {
-  // Componente simplificado sin botones de cierre
-  // El tour ahora es la única vista disponible
-  
   return (
     <div style={{ 
       position: 'fixed', 
@@ -12,9 +10,24 @@ const TourOverlay = () => {
       width: '100%', 
       height: '100%', 
       pointerEvents: 'none', // No interfiere con la interacción del tour
-      zIndex: 1000 
+      zIndex: 1001 // Encima del tour pero debajo de cualquier modal
     }}>
-      {/* Overlay vacío - reservado para futuras funcionalidades sin botones de cierre */}
+      {/* Logo en la esquina superior derecha */}
+      <div style={{
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        pointerEvents: 'auto' // Permitir interacción con el logo
+      }}>
+        <Logo 
+          variant="white" 
+          size="medium"
+          sx={{
+            filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))', // Sombra para mejor visibilidad
+            cursor: 'pointer'
+          }}
+        />
+      </div>
     </div>
   );
 };

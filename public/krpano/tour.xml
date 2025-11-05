@@ -72,7 +72,8 @@
      <style name="skin_hotspotstyle7" scale="0.4" handcursor="false" edge="bottom" align="bottom" alpha="1"/>
    
 
-	<layer name="logo1" url="skin/logo.png" scale="0.3" keep="true" align="topleft" visible="true" x="5" y="5"/>
+	<!-- Logo movido a React overlay - oculto en Krpano -->
+	<layer name="logo1" url="skin/logo.png" scale="0.3" keep="true" align="topleft" visible="false" x="5" y="5"/>
 
 	 <style name="lupa" scale="0.6" distorted="false" oy="0" handcursor="true" zorder="50" />
 
