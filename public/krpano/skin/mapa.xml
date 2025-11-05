@@ -39,9 +39,9 @@
             <!-- radar mask container -->
             <layer name="radarmask"  type="container" align="lefttop" width="100%" height="100%" maskchildren="true">
 
-                <!-- radar plugin (zoder=1 and hidden at start) -->
+                <!-- radar plugin (usando versión JavaScript directamente) -->
                 <layer name="radar" visible="false"
-                       url="../plugins/radar.swf" alturl="../plugins/radar.js"
+                       url="../plugins/radar.js"
                        align="lefttop" edge="center" zorder="1"
                        scale="1.0"
                        fillcolor="0xFFFFFF" fillalpha="0.4"
