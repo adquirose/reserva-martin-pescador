@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from './Logo';
+import ContactMenu from './ContactMenu';
 
 const TourOverlay = () => {
   return (
@@ -12,6 +13,11 @@ const TourOverlay = () => {
       pointerEvents: 'none', // No interfiere con la interacción del tour
       zIndex: 1001 // Encima del tour pero debajo de cualquier modal
     }}>
+      {/* Menú de contacto en la esquina superior izquierda */}
+      <div style={{ pointerEvents: 'auto' }}>
+        <ContactMenu />
+      </div>
+
       {/* Logo del proyecto en la esquina superior derecha */}
       <div style={{
         position: 'absolute',
@@ -20,11 +26,12 @@ const TourOverlay = () => {
         pointerEvents: 'auto' // Permitir interacción con el logo
       }}>
         <Logo 
-          variant="default" 
+          variant="white" 
           size="medium"
           sx={{
             filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))', // Sombra para mejor visibilidad
-            cursor: 'pointer'
+            maxHeight: '60px',
+            width: 'auto'
           }}
         />
       </div>

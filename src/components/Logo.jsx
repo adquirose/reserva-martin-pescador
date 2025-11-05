@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import logoImage from '../assets/logo.png';
-import logo1Image from '../assets/logo1.png';
+import logoFinal from '../assets/logo-final.png';
+import logoBlancoFinal from '../assets/logo-blancoi-final.png';
+import grupoMartinPescador from '../assets/grupo-martinpescador.png';
 
 const Logo = ({ 
   variant = 'default', 
@@ -12,10 +13,12 @@ const Logo = ({
   // Seleccionar la imagen del logo según la variante
   const getLogoSrc = () => {
     switch (variant) {
-      case 'alt':
-        return logo1Image;
+      case 'white':
+        return logoBlancoFinal;
+      case 'grupo':
+        return grupoMartinPescador;
       default:
-        return logoImage;
+        return logoFinal;
     }
   };
 
