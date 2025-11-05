@@ -1,0 +1,304 @@
+﻿<krpano version="1.18" title="Hacienda Zapallar" onstart="startup();">
+
+	<include url="skin/vtourskin.xml" />
+	<include url="skin/vistageneral.xml" />
+	<include url="plugins/showtext.xml" />
+
+    <include url="skin/vtourskin_design_117.xml" />
+    <include url="skin/ficha.xml" />
+    <include url="skin/mapa.xml" />
+	<!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+	<skin_settings maps="false"
+	               maps_type="bing"
+	               maps_bing_api_key=""
+	               maps_zoombuttons="false"
+	               gyro="true"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="55" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="true"
+	               thumbs_text="true"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="BLEND(0.5)"
+	               controlbar_offset="20"
+	               />
+
+
+	<!-- set optional skin logo url -->
+
+
+	   <style name="skin_hotspotstyle1"
+        scale="0.5"
+        zorder="50"
+        handcursor="true"
+        onhover="showtext(Disponible · Ver ficha);"
+        alpha="1"
+        type="text"
+        edge="center"
+        css="font-family:Din Alternate; font-size:21px; color:#000000;font-weight: bold; text-align:center;"
+        vcenter="true"
+        padding="5"
+        bg="true"
+        bgcolor="0xffffff"
+        bgalpha="1.0"
+        bgborder="0"
+        bgroundedge="22"
+        bgshadow=""
+        txtshadow=""
+        width="44" height="44"
+    />
+
+	  <style name="spot-andrea" scale="0.4" zorder="50" edge="bottom" align="bottom" alpha="1"
+        capture="false" handcursor="false"
+	    fillcolor="0xffff00" fillalpha="0.30"
+	    bordercolor="0xffff00" borderalpha="0.80"
+	    onover="tween(alpha, 0.1, 0.25);"
+	    onout="tween(alpha, 1.0, 0.25);"
+	    ondown.touch="asyncloop(pressed, onhover(); );"
+	    onup.touch="onout();"
+    />
+
+     
+     <style name="skin_hotspotstyle4" scale="0.5" handcursor="false" edge="bottomleft" align="bottom" alpha="1"/>
+     <style name="skin_hotspotstyle7" scale="0.4" handcursor="false" edge="bottom" align="bottom" alpha="1"/>
+   
+
+	<layer name="logo1" url="skin/logo.png" scale="0.35" keep="true" align="topleft" visible="true" x="5" y="5"/>
+
+	 <style name="lupa" scale="0.6" distorted="false" oy="0" handcursor="true" zorder="50" />
+
+
+	 <textstyle name="default"
+
+
+
+	           font="Helvetica" fontsize.no-mobile="14" fontsize.mobile="14" bold="false"
+
+
+
+	           background="true" backgroundcolor="0x211915" backgroundalpha="0.667"
+
+
+
+	           border="true" borderwidth="2" bordercolor="0xFFFFFF" roundedge="1"
+
+
+
+	           textcolor="0xFFFFFF"
+
+
+
+	           padding="6 10"
+
+
+
+	           textalign="center"
+
+
+
+	           yoffset.no-touch="-5"
+
+
+
+	           yoffset.touch="-40"
+
+
+
+	           />
+
+	<action name="startup">
+		if(startscene === null, copy(startscene,scene[0].name));
+		loadscene(get(startscene), null, MERGE);
+	</action>
+
+
+
+		 <scene name="scene_e4" title="Vista Etapa 4" onstart="mostrar_btn_vistageneral(true);activatespot(spot-e4);generar_spots(193,202);generar_spots(238,239);" thumburl="panos/e4.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-388.906" vlookat="73.508" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/e4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/e4.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+    <hotspot name="vista1" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista1, 70, tween(easeOutQuad,3));loadscene(scene_e1, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 1);" ath="-61.567" atv="52.393"/>
+    <hotspot name="vista2" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista2, 70, tween(easeOutQuad,3));loadscene(scene_e2, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 2);" ath="150.423" atv="39.820"/>
+    <hotspot name="vista3" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista3, 70, tween(easeOutQuad,3));loadscene(scene_e3, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 3);" ath="155.564" atv="24.400"/>
+
+
+    <hotspot name="ficham5" style="skin_hotspotstyle1" html="M5" ath="45.844" atv="34.744"/>
+    <hotspot name="ficham6" style="skin_hotspotstyle1" html="M6" ath="-11.168" atv="52.328"/>
+
+    <hotspot name="ficha17" style="skin_hotspotstyle1" html="17" ath="89.381" atv="32.071"/>
+    <hotspot name="ficha18" style="skin_hotspotstyle1" html="18" ath="90.637" atv="38.446"/>
+    <hotspot name="ficha19" style="skin_hotspotstyle1" html="19" ath="96.059" atv="44.452"/>
+    <hotspot name="ficha20" style="skin_hotspotstyle1" html="20" ath="105.982" atv="53.599"/>
+    <hotspot name="ficha21" style="skin_hotspotstyle1" html="21" ath="126.431" atv="64.399"/>
+    <hotspot name="ficha22" style="skin_hotspotstyle1" html="22" ath="165.319" atv="71.868"/>
+
+
+
+	</scene>
+
+		 <scene name="scene_e3" title="Vista Etapa 3" onstart="mostrar_btn_vistageneral(true);activatespot(spot-e3);generar_spots(94,103);generar_spots(144,149);generar_spots(155,170);generar_spots(174,175);" thumburl="panos/e3.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-530.898" vlookat="61.286" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/e3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/e3.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+   
+	   
+    <hotspot name="vista1" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista1, 70, tween(easeOutQuad,3));loadscene(scene_e1, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 1);" ath="-61.567" atv="52.393"/>
+    <hotspot name="vista2" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista2, 70, tween(easeOutQuad,3));loadscene(scene_e2, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 2);" ath="150.423" atv="39.820"/>
+   <hotspot name="vista4" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista4, 70, tween(easeOutQuad,3));loadscene(scene_e4, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 4);" ath="128.674" atv="46.593"/>
+
+
+    <hotspot name="ficham3" style="skin_hotspotstyle1" html="M3" ath="-13.371" atv="52.450"/>
+    <hotspot name="ficham4" style="skin_hotspotstyle1" html="M4" ath="-75.930" atv="36.938"/>
+
+    <hotspot name="ficha12" style="skin_hotspotstyle1" html="12" ath="96.040" atv="67.228"/>
+    <hotspot name="ficha13" style="skin_hotspotstyle1" html="13" ath="143.409" atv="79.303"/>
+    <hotspot name="ficha14" style="skin_hotspotstyle1" html="14" ath="-136.213" atv="71.415"/>
+    <hotspot name="ficha15" style="skin_hotspotstyle1" html="15" ath="-123.802" atv="55.109"/>
+    <hotspot name="ficha16" style="skin_hotspotstyle1" html="16" ath="-121.778" atv="44.420"/>
+
+
+
+
+
+	</scene>
+
+
+
+
+		 <scene name="scene_e2" title="Vista Etapa 2" onstart="mostrar_btn_vistageneral(true);activatespot(spot-e2);generar_spots(68,93);generar_spots(120,143);" thumburl="panos/e2.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-402.508" vlookat="90.000" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/e2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/e2.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+
+    <hotspot name="spot2" handcursor="false" style="spot-andrea" url="skin/spots/areaverde.png" onhover="showtext(Área Común);" ath="-135.095" atv="44.584"/>
+
+
+    <hotspot name="vista1" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista1, 70, tween(easeOutQuad,3));loadscene(scene_e1, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 1);" ath="-61.567" atv="52.393"/>
+    <hotspot name="vista3" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista3, 70, tween(easeOutQuad,3));loadscene(scene_e3, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 3);" ath="155.564" atv="24.400"/>
+    <hotspot name="vista4" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista4, 70, tween(easeOutQuad,3));loadscene(scene_e4, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 4);" ath="128.674" atv="46.593"/>
+
+
+    <hotspot name="ficham1" style="skin_hotspotstyle1" html="M1" ath="-129.902" atv="47.102"/>
+    <hotspot name="ficham2" style="skin_hotspotstyle1" html="M2" ath="-163.899" atv="33.271"/>
+
+    <hotspot name="ficha7" style="skin_hotspotstyle1" html="7" ath="40.358" atv="72.961"/>
+    <hotspot name="ficha8" style="skin_hotspotstyle1" html="8" ath="85.018" atv="73.506"/>
+    <hotspot name="ficha9" style="skin_hotspotstyle1" html="9" ath="119.940" atv="68.194"/>
+    <hotspot name="ficha10" style="skin_hotspotstyle1" html="10" ath="140.277" atv="57.559"/>
+    <hotspot name="ficha11" style="skin_hotspotstyle1" html="11" ath="146.658" atv="47.294"/>
+
+
+
+
+
+	</scene>
+
+
+
+
+
+
+	 <scene name="scene_e1" title="Vista Etapa 1" onstart="mostrar_btn_vistageneral(true);activatespot(spot-e1);generar_spots(1,67);" thumburl="panos/e1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-139.168" vlookat="85.439" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/e1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/e1.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+
+    <hotspot name="spot1" handcursor="false" style="spot-andrea" url="skin/spots/acceso.png" onhover="showtext(Acceso);" ath="140.802" atv="55.381"/>
+
+
+	
+    <hotspot name="vista2" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista2, 70, tween(easeOutQuad,3));loadscene(scene_e2, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 2);" ath="150.423" atv="39.820"/>
+    <hotspot name="vista3" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista3, 70, tween(easeOutQuad,3));loadscene(scene_e3, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 3);" ath="155.564" atv="24.400"/>
+    <hotspot name="vista4" handcursor="true" zorder="50" style="animation-hotspot" url="skin/spots/spot0.png" onclick="looktohotspot(vista4, 70, tween(easeOutQuad,3));loadscene(scene_e4, null, MERGE, BLEND(1));" onhover="showtext(Ver Masterplan 360º Etapa 4);" ath="128.674" atv="46.593"/>
+
+    <hotspot name="ficha1" style="skin_hotspotstyle1" html="1" ath="77.475" atv="38.674"/>
+    <hotspot name="ficha2" style="skin_hotspotstyle1" html="2" ath="64.111" atv="40.185"/>
+    <hotspot name="ficha3" style="skin_hotspotstyle1" html="3" ath="64.501" atv="43.674"/>
+    <hotspot name="ficha4" style="skin_hotspotstyle1" html="4" ath="66.508" atv="48.178"/>
+    <hotspot name="ficha5" style="skin_hotspotstyle1" html="5" ath="67.108" atv="54.192"/>
+    <hotspot name="ficha6" style="skin_hotspotstyle1" html="6" ath="81.091" atv="45.956"/>
+
+    <hotspot name="fichaj" style="skin_hotspotstyle1" html="J" ath="-78.591" atv="35.070"/>
+    <hotspot name="fichak" style="skin_hotspotstyle1" html="K" ath="-76.860" atv="30.310"/>
+    <hotspot name="fichal" style="skin_hotspotstyle1" html="L" ath="-60.925" atv="30.796"/>
+
+
+	</scene>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+<style name="animation-hotspot" url="skin/spots/spot0.png" crop="0|0|64|64" framewidth="64" frameheight="64" frame="0" lastframe="19" scale="0.8" onloaded="hotspot_animate();"/>
+<action name="hotspot_animate"> inc(frame,1,get(lastframe),0); mul(ypos,frame,frameheight); txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight)); delayedcall(0.03, if(loaded, hotspot_animate() ) ); </action>
+
+
+	
+
+
+
+
+</krpano>

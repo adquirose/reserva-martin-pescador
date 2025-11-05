@@ -1,0 +1,92 @@
+<krpano>
+    <!-- /Spots del tour Virtual-->
+   <style name="hs_pro_disponible"
+        scale="0.5"
+        zorder="50"
+        handcursor="true"
+        onhover="showtext(Disponible · Ver ficha);"
+        alpha="1"
+        type="text"
+        edge="center"
+        css="font-family:Din Alternate; font-size:30px; color:#000000;font-weight: bold; text-align:center;"
+        vcenter="true"
+        padding="5"
+        bg="true"
+        bgcolor="0xffffff"
+        bgalpha="1.0"
+        bgborder="0"
+        bgroundedge="26"
+        bgshadow=""
+        txtshadow=""
+        width="52" height="52"
+    />
+
+    <style name="hs_pro_vendido"
+        scale="0.5"
+        zorder="50"
+        handcursor="true"
+        onhover="showtext(Vendido · Ver ficha);"
+        alpha="1"
+        type="text"
+        edge="center"
+        css="font-family:Din Alternate; font-size:30px; color:#ffffff;font-weight: bold; text-align:center;"
+        vcenter="true"
+        padding="5"
+        bg="true"
+        bgcolor="0xff0000"
+        bgalpha="1.0"
+        bgborder="0"
+        bgroundedge="26"
+        bgshadow=""
+        txtshadow=""
+        width="52" height="52"
+    />
+
+    <style name="hs_pro_reservado"
+        scale="0.5"
+        zorder="50"
+        handcursor="true"
+        onhover="showtext(Reservado · Ver ficha);"
+        alpha="1"
+        type="text"
+        edge="center"
+        css="font-family:Din Alternate; font-size:30px; color:#ffffff;font-weight: bold; text-align:center;"
+        vcenter="true"
+        padding="5"
+        bg="true"
+        bgcolor="0x0000ff"
+        bgalpha="1.0"
+        bgborder="0"
+        bgroundedge="26"
+        bgshadow=""
+        txtshadow=""
+        width="52" height="52"
+    />
+
+
+
+     <action name="generar_spots">
+        for(set(i,%1), i LE %2, inc(i),
+            txtadd(nombre_spot, 'ficha', get(i));
+            set(spot_ath, get(spot[get(nombre_spot)].ath));
+            set(spot_atv, get(spot[get(nombre_spot)].atv));
+            set(spot_html, get(spot[get(nombre_spot)].html));
+            set(spot_estado, get(spot[get(nombre_spot)].estado));
+        
+            crear_hs(get(nombre_spot), get(spot_ath), get(spot_atv), get(spot_estado), get(spot_html));
+        );
+    </action>
+    <action name="crear_hs">
+        addhotspot(%1);
+        set(hotspot[%1].ath,%2);
+        set(hotspot[%1].atv,%3);
+        if(
+            %4 == disponible, hotspot[%1].loadstyle(hs_pro_disponible),
+            %4 == vendido, hotspot[%1].loadstyle(hs_pro_vendido),
+            %4 == reservado, hotspot[%1].loadstyle(hs_pro_reservado),
+        );
+        
+        set(hotspot[%1].html,%5);
+        set(hotspot[%1].onclick,mostrar_ficha(%1,plano,skin/plano.pdf,%5));
+    </action>
+</krpano>

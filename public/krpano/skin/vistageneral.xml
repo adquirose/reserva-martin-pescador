@@ -1,0 +1,22 @@
+<krpano>
+
+
+
+<layer name="btn_vistageneral" keep="true" visible="false" enabled="false" url="spots/btn-vistageneral.png" scale="0.6" align="bot" x="0" y="20" handcursor="true" onclick="cargar_escena(scene_master);" />	
+
+<action name="mostrar_btn_vistageneral">
+	set(layer[btn_vistageneral].visible,%1);
+	set(layer[btn_vistageneral].enabled,%1);
+</action>
+
+
+
+<action name="cargar_escena">
+	
+	loadscene(%1, null, MERGE, BLEND(1));
+	
+</action>	
+
+	
+
+</krpano>

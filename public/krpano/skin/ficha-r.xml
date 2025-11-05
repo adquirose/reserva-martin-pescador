@@ -1,0 +1,137 @@
+
+<krpano>
+	<include url="data.xml" />
+
+	<layer name="sidebar" keep="true" align="centerleftt" alpha="0" bgalpha="0.9" bgcapture="true" bgcolor="0x333333" edge="centerleft" handcursor="false" height="320" open="false" type="container" visible="false" width="250" x="-400" y="0" zorder="50" item="false">
+			
+			<layer name="border" align="topright" scale="1" alpha="1" children="false" edge="topright"  width="100%" height="100%" handcursor="false" keep="true" onclick=""  url="sidebar/border.png" x="0" y="0" zorder="21" />
+
+            <!--<layer name="sidebar_text_chica" align="bottom" edge="bottom" autoheight="true" background="false" backgroundcolor="0x666666" backgroundalpha="1" html="* Todas las parcelas tienen acceso a la playa por camino asfaltado hasta el estacionamiento. Él área destinada como playa son 120 metros de frente de lago, servidumbre inscrita en el conservador de bienes raíces a favor del condominio. Además, se construirá una marina para 20 embarcaciones aprox. la cual se encuentra actualmente en trámite, su solicitud de Concesión Maritima ." css="color:#FFFFFF; font-family:arial; font-weight:normal; font-size:12px; text-align:left; margin-left: 10px; "  handcursor="false" keep="true" url="../plugins/textfield.swf" width="320" x="0" y="80" zorder="21"/>-->
+           
+            <layer name="sidebar_text_valor" align="lefttop" edge="lefttop" x="10" y="10" autoheight="true" background="false" backgroundcolor="0x000000" backgroundalpha="0.5" css="data:css_texto_valor"  handcursor="false" keep="true" url="../plugins/textfield.swf" width="230" zorder="21"/>
+            
+            <!--<layer name="brand_thumb" align="topcenter" children="false" edge="top" handcursor="false" keep="true" url="" x="0" y="4" height="" zorder="20"/>
+
+			 <layer name="line_top" align="bottom" scale="1" alpha="1" children="false" edge="bottom"  width="100%" handcursor="false" keep="true"  url="sidebar/line.png" x="0" y="375" zorder="51" />-->
+
+			 <layer name="line_bottom" align="bottom" scale="1" alpha="1" children="false" edge="bottom"  width="100%" handcursor="false" keep="true"  url="sidebar/line.png" x="0" y="60" zorder="51" />
+
+            <layer name="continue_btn" align="leftbottom" scale="0.75" alpha="1" children="false" crop="0|0|150|74" edge="leftbottom" first_time="true" handcursor="true" keep="true" onovercrop="0|75|150|75" url="sidebar/continuar.png" x="15" y="5" zorder="51"/>
+
+             <layer name="catalogo" align="rightbottom" scale="0.75" alpha="1" children="false" crop="0|0|150|74" edge="rightbottom" first_time="true" handcursor="true" keep="true" onovercrop="0|75|150|75" url="sidebar/brochure.png" x="15" y="5" zorder="51"/>
+
+    </layer>
+
+	<layer name="transparent_layer" align="topleft" alpha="0"  children="false" edge="topleft" enabled="false" handcursor="false" height="100%" keep="true" url="sidebar/transparent.png" x="0" y="0" width="100%" zorder="10"/>
+    
+    
+    
+
+    <data name="css_texto_valor">
+    	h2 { color:#FFFFFF; font-family:ARIAL; font-weight:normal; font-size:18px; text-align:left; margin-left: 10px; }
+ 	 	p { color:#FFFFFF; font-family:ARIAL; font-weight:normal; font-size:15px; text-align:left; margin-left: 10px; }
+    </data>
+
+    <data name="css_texto_nota">
+    	
+ 	 	color:#FFFFFF; font-family:ARIAL; font-weight:normal; font-size:10px; text-align:left; margin-left: 5px;
+    </data>
+
+
+    <action name="mostrar_ficha">
+		     
+		    txtadd(nombre_escena,scene_,%3);
+		    if(%3 != null,
+		    loadscene(get(nombre_escena),null, MERGE, BLEND(1));
+		    );
+		    
+		    
+		    txtadd(texto_valor,'data:',%1);
+		    
+		    set(pos_y,get(layer[brand_thumb].height));
+		    add(pos_y_text,pos_y,60);
+		    
+		    <!--showlog(true);
+		    trace('altura=', get(height_ficha));
+		    trace('ancho=', get(width_ficha));
+		    trace('texto_valor=',texto_valor);
+		    trace('pos_y=', pos_y_text);-->
+
+		    <!--set(layer[transparent_layer].enabled,true); 
+		    tween(layer[transparent_layer].alpha,0.8,.3,easeoutquad);-->
+		    
+		    if(layer[sidebar].open == false, open_sidebar());
+
+		    tween(layer[sidebar_text_valor].alpha,1,.3,easeoutquad); 
+		    tween(layer[continue_btn].alpha,1,.3,easeoutquad); 
+			set(layer[brand_thumb].url,%SWFPATH%/skin/img-lotes/%2.jpg);
+
+		    delayedcall(.2, 
+		    				set(layer[sidebar_text_valor].html,get(texto_valor));
+		    				
+							
+							
+		    			); 
+		    delayedcall( .3, add(sidebar_height,height_ficha,10); 
+		                     set(layer[sidebar].height,get(sidebar_height)); 
+		                     add(sidebar_width,width_ficha,0); 
+		                     set(layer[sidebar].width,get(sidebar_width)); 
+		                ); 
+		    
+
+		    delayedcall(.3, 
+		                    
+		                    
+		                    tween(layer[continue_btn].alpha,1,.3,easeoutquad); 
+		                ); 
+		    set(layer[continue_btn].onclick,continue(%2));
+		    set(layer[catalogo].onclick,openurl(skin/plano.pdf));
+		    set(layer[layout].onclick,openurl(skin/layout.pdf));
+		    set(layer[contacto].onclick,openurl(http://www.vivevichuquen.cl/?utm_source=360&amp;utm_campaign=Vichuquen+Contingente&amp;utm_medium=360));
+    </action>
+
+    <action name="continue">
+		    
+		    tween(layer[transparent_layer].alpha,0,.3,easeoutquad);
+		    set(layer[transparent_layer].enabled,false); 
+		    close_sidebar(); 
+		    delayedcall(1,set(layer[continue_btn].alpha,0)); 
+		    delayedcall(1,set(layer[sidebar_text].alpha,0)); 
+		    
+		    loadscene(%1,null,MERGE,BLEND(1));
+		    	
+		    
+		    
+    </action>
+    
+
+    <action name="open_sidebar">
+			set(layer[sidebar].visible,true); 
+			delayedcall(.3, tween(layer[sidebar].alpha,1,1.5,easeoutquad); 
+							tween(layer[sidebar].x,0,1.5,easeoutquad); 
+							if(isphone, tween(layer[sidebar].x,0.5,easeoutquad);); 
+						); 
+			delayedcall(1,set(layer[sidebar].open,true));
+		</action>
+		<action name="close_sidebar">
+					
+					tween(layer[sidebar].alpha,0,1.5,easeoutquad); 
+					tween(layer[sidebar].x,-400,1.5,easeoutquad); 
+					
+					delayedcall(2, set(layer[continue_btn].x,15); 
+					
+					set(layer[sidebar].align,centerleft); 
+					set(layer[sidebar].edge,centerleft);
+									
+					
+					 
+					set(layer[sidebar].x,-400); ); 
+					 
+					set(layer[sidebar].open,false);
+
+		</action>
+
+	
+
+	
+</krpano>

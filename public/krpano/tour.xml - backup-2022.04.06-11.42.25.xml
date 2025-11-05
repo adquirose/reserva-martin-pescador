@@ -1,0 +1,306 @@
+﻿<krpano version="1.18" title="Refugio Culdeo" onstart="startup();">
+
+	<include url="skin/vtourskin.xml" />
+	<include url="skin/vistageneral.xml" />
+	<include url="plugins/showtext.xml" />
+
+
+
+    <include url="skin/ficha.xml" />
+
+<include url="skin/vtourskin_design_117.xml" />
+
+   
+	<!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+	<skin_settings maps="false"
+	               maps_type="bing"
+	               maps_bing_api_key=""
+	               maps_zoombuttons="false"
+	               gyro="true"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="55" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="true"
+	               thumbs_text="true"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="BLEND(0.5)"
+	               controlbar_offset="20"
+	               />
+
+
+	<!-- set optional skin logo url -->
+
+
+	   <style name="skin_hotspotstyle"
+        scale="0.5"
+        zorder="50"
+        handcursor="true"
+        onhover="showtext(Disponible · Ver ficha);"
+        alpha="1"
+        type="text"
+        edge="center"
+        css="font-family:Din Alternate; font-size:21px; color:#000000;font-weight: bold; text-align:center;"
+        vcenter="true"
+        padding="5"
+        bg="true"
+        bgcolor="0xffffff"
+        bgalpha="1.0"
+        bgborder="0"
+        bgroundedge="22"
+        bgshadow=""
+        txtshadow=""
+        width="44" height="44"
+    />
+     
+     <style name="skin_hotspotstyle4" scale="0.5" handcursor="false" edge="bottomleft" align="bottom" alpha="1"/>
+  
+	 <style name="hs" scale="0.4" zorder="50" edge="bottom" align="bottom" alpha="1"/>
+
+	 <style name="lupa" scale="0.6" distorted="false" oy="0" handcursor="true" zorder="50" />
+
+
+	 <textstyle name="default"
+
+
+
+	           font="Helvetica" fontsize.no-mobile="14" fontsize.mobile="14" bold="false"
+
+
+
+	           background="true" backgroundcolor="0x211915" backgroundalpha="0.667"
+
+
+
+	           border="true" borderwidth="2" bordercolor="0xFFFFFF" roundedge="1"
+
+
+
+	           textcolor="0xFFFFFF"
+
+
+
+	           padding="6 10"
+
+
+
+	           textalign="center"
+
+
+
+	           yoffset.no-touch="-5"
+
+
+
+	           yoffset.touch="-40"
+
+
+
+	           />
+
+	<action name="startup">
+		if(startscene === null, copy(startscene,scene[0].name));
+		loadscene(get(startscene), null, MERGE);
+	</action>
+
+
+	 <scene name="scene_master" title="Masterplan 360º" onstart="mostrar_btn_vistageneral(false);generar_spots(1,85)" thumburl="panos/master.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-310.064" vlookat="18.989" fovtype="MFOV" fov="110" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/master.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/master.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+	<hotspot name="s1" url="skin/spots/lupa.png" style="lupa" onclick="looktohotspot(s1, 70, tween(easeOutQuad,3));cargar_escena(scene_1);" onhover="showtext(Ver Vista 1);" ath="145.749" atv="31.398"/>
+
+	<hotspot name="s2" url="skin/spots/lupa.png" style="lupa" onclick="looktohotspot(s2, 70, tween(easeOutQuad,3));cargar_escena(scene_2);" onhover="showtext(Ver Vista 2);" ath="145.749" atv="31.398"/>
+
+	<hotspot name="s3" url="skin/spots/lupa.png" style="lupa" onclick="looktohotspot(s3, 70, tween(easeOutQuad,3));cargar_escena(scene_3);" onhover="showtext(Ver Vista 3);" ath="145.749" atv="31.398"/>
+	  
+    <hotspot name="hito1" style="skin_hotspotstyle4" url="skin/spots/1.png" ath="13.185" atv="-5.072"/>
+	<hotspot name="hito3" style="skin_hotspotstyle4" url="skin/spots/3.png" ath="34.742" atv="-4.905"/>
+	<hotspot name="hito2" style="skin_hotspotstyle4" url="skin/spots/2.png" ath="41.022" atv="-1.589"/>
+	<hotspot name="hito4" style="skin_hotspotstyle4" url="skin/spots/4.png" ath="-111.205" atv="-3.206"/>
+	<hotspot name="hito5" style="skin_hotspotstyle4" url="skin/spots/5.png" ath="121.576" atv="-12.387"/>
+	<hotspot name="hito6" style="skin_hotspotstyle4" url="skin/spots/6.png" ath="93.847" atv="-2.653"/>
+	<hotspot name="hito7" style="skin_hotspotstyle4" url="skin/spots/7.png" ath="-34.782" atv="3.724"/>
+    <hotspot name="hito8" style="skin_hotspotstyle4" url="skin/spots/8.png" ath="159.041" atv="-16.697"/>
+
+
+    <hotspot name="spot2" handcursor="false" style="hs" url="skin/spots/puerto.png" onhover="showtext(Embarcadero);" ath="19.794" atv="7.267"/>
+    <hotspot name="spot3" handcursor="false" style="hs" url="skin/spots/reserva.png" onhover="showtext(Reserva Ecológica · Área Común 21 Hectáreas);" ath="50.472" atv="2.847"/>
+
+
+
+    <hotspot name="ficha1" style="skin_hotspotstyle" html="1" ath="77.475" atv="38.674"/>
+    <hotspot name="ficha2" style="skin_hotspotstyle" html="2" ath="64.111" atv="40.185"/>
+    <hotspot name="ficha3" style="skin_hotspotstyle" html="3" ath="64.501" atv="43.674"/>
+    <hotspot name="ficha4" style="skin_hotspotstyle" html="4" ath="66.508" atv="48.178"/>
+    <hotspot name="ficha5" style="skin_hotspotstyle" html="5" ath="67.108" atv="54.192"/>
+    <hotspot name="ficha6" style="skin_hotspotstyle" html="6" ath="81.091" atv="45.956"/>
+    <hotspot name="ficha7" style="skin_hotspotstyle" html="7" ath="99.529" atv="53.128"/>
+    <hotspot name="ficha8" style="skin_hotspotstyle" html="8" ath="85.956" atv="60.663"/>
+    <hotspot name="ficha9" style="skin_hotspotstyle" html="9" ath="69.867" atv="74.676"/>
+    <hotspot name="ficha10" style="skin_hotspotstyle" html="10" ath="-58.142" atv="83.748"/>
+    <hotspot name="ficha11" style="skin_hotspotstyle" html="11" ath="117.088" atv="76.968"/>
+    <hotspot name="ficha12" style="skin_hotspotstyle" html="12" ath="109.173" atv="60.889"/>
+    <hotspot name="ficha13" style="skin_hotspotstyle" html="13" ath="121.994" atv="49.866"/>
+    <hotspot name="ficha14" style="skin_hotspotstyle" html="14" ath="138.445" atv="64.524"/>
+    <hotspot name="ficha15" style="skin_hotspotstyle" html="15" ath="-174.923" atv="69.202"/>
+    <hotspot name="ficha16" style="skin_hotspotstyle" html="16" ath="-139.478" atv="68.150"/>
+    <hotspot name="ficha17" style="skin_hotspotstyle" html="17" ath="-116.909" atv="61.492"/>
+    <hotspot name="ficha18" style="skin_hotspotstyle" html="18" ath="-111.477" atv="49.481"/>
+    <hotspot name="ficha19" style="skin_hotspotstyle" html="19" ath="-122.209" atv="43.088"/>
+    <hotspot name="ficha20" style="skin_hotspotstyle" html="20" ath="-133.218" atv="38.492"/>
+    <hotspot name="ficha21" style="skin_hotspotstyle" html="21" ath="-99.667" atv="42.069"/>
+    <hotspot name="ficha22" style="skin_hotspotstyle" html="22" ath="-82.487" atv="41.927"/>
+    <hotspot name="ficha23" style="skin_hotspotstyle" html="23" ath="-78.591" atv="35.070"/>
+    <hotspot name="ficha24" style="skin_hotspotstyle" html="24" ath="-76.860" atv="30.310"/>
+    <hotspot name="ficha25" style="skin_hotspotstyle" html="25" ath="-60.925" atv="30.796"/>
+    <hotspot name="ficha26" style="skin_hotspotstyle" html="26" ath="-59.486" atv="35.760"/>
+    <hotspot name="ficha27" style="skin_hotspotstyle" html="27" ath="-57.584" atv="41.082"/>
+    <hotspot name="ficha28" style="skin_hotspotstyle" html="28" ath="-70.522" atv="49.009"/>
+    <hotspot name="ficha29" style="skin_hotspotstyle" html="29" ath="-78.214" atv="58.012"/>
+    <hotspot name="ficha30" style="skin_hotspotstyle" html="30" ath="-43.475" atv="66.051"/>
+    <hotspot name="ficha31" style="skin_hotspotstyle" html="31" ath="-40.697" atv="51.393"/>
+    <hotspot name="ficha32" style="skin_hotspotstyle" html="32" ath="-31.938" atv="44.287"/>
+    <hotspot name="ficha33" style="skin_hotspotstyle" html="33" ath="-9.580" atv="39.842"/>
+    <hotspot name="ficha34" style="skin_hotspotstyle" html="34" ath="-6.591" atv="46.175"/>
+    <hotspot name="ficha35" style="skin_hotspotstyle" html="35" ath="-0.836" atv="54.569"/>
+    <hotspot name="ficha36" style="skin_hotspotstyle" html="36" ath="-3.843" atv="67.382"/>
+    <hotspot name="ficha37" style="skin_hotspotstyle" html="37" ath="32.599" atv="63.944"/>
+    <hotspot name="ficha38" style="skin_hotspotstyle" html="38" ath="47.236" atv="53.944"/>
+    <hotspot name="ficha39" style="skin_hotspotstyle" html="39" ath="-74.440" atv="39.519"/>
+    <hotspot name="ficha40" style="skin_hotspotstyle" html="40" ath="-77.764" atv="38.157"/>
+    <hotspot name="ficha41" style="skin_hotspotstyle" html="41" ath="-80.968" atv="36.837"/>
+    <hotspot name="ficha42" style="skin_hotspotstyle" html="42" ath="-83.913" atv="36.193"/>
+    <hotspot name="ficha43" style="skin_hotspotstyle" html="43" ath="-86.990" atv="35.514"/>
+    <hotspot name="ficha44" style="skin_hotspotstyle" html="44" ath="-80.193" atv="32.563"/>
+    <hotspot name="ficha45" style="skin_hotspotstyle" html="45" ath="-76.900" atv="34.123"/>
+    <hotspot name="ficha46" style="skin_hotspotstyle" html="46" ath="-73.774" atv="35.157"/>
+    <hotspot name="ficha47" style="skin_hotspotstyle" html="47" ath="-70.412" atv="36.299"/>
+    <hotspot name="ficha48" style="skin_hotspotstyle" html="48" ath="-67.064" atv="37.154"/>
+    <hotspot name="ficha49" style="skin_hotspotstyle" html="49" ath="-64.068" atv="38.637"/>
+    <hotspot name="ficha50" style="skin_hotspotstyle" html="50" ath="-61.443" atv="39.732"/>
+    <hotspot name="ficha51" style="skin_hotspotstyle" html="51" ath="-61.554" atv="42.104"/>
+    <hotspot name="ficha52" style="skin_hotspotstyle" html="52" ath="-61.743" atv="45.076"/>
+    <hotspot name="ficha53" style="skin_hotspotstyle" html="53" ath="-159.715" atv="45.905"/>
+    <hotspot name="ficha54" style="skin_hotspotstyle" html="54" ath="-159.715" atv="45.905"/>
+    <hotspot name="ficha55" style="skin_hotspotstyle" html="55" ath="-152.716" atv="47.846"/>
+    <hotspot name="ficha56" style="skin_hotspotstyle" html="56" ath="-144.965" atv="48.915"/>
+    <hotspot name="ficha57" style="skin_hotspotstyle" html="57" ath="-137.902" atv="49.901"/>
+    <hotspot name="ficha58" style="skin_hotspotstyle" html="58" ath="-128.856" atv="50.860"/>
+    <hotspot name="ficha59" style="skin_hotspotstyle" html="59" ath="-120.032" atv="51.025"/>
+    <hotspot name="ficha60" style="skin_hotspotstyle" html="60" ath="-115.371" atv="51.221"/>
+    <hotspot name="ficha61" style="skin_hotspotstyle" html="61" ath="-110.355" atv="50.626"/>
+    <hotspot name="ficha62" style="skin_hotspotstyle" html="62" ath="-106.238" atv="49.112"/>
+    <hotspot name="ficha63" style="skin_hotspotstyle" html="63" ath="-102.634" atv="48.165"/>
+    <hotspot name="ficha64" style="skin_hotspotstyle" html="64" ath="-98.788" atv="46.899"/>
+    <hotspot name="ficha65" style="skin_hotspotstyle" html="65" ath="-95.309" atv="45.662"/>
+    <hotspot name="ficha66" style="skin_hotspotstyle" html="66" ath="-92.395" atv="44.439"/>
+    <hotspot name="ficha67" style="skin_hotspotstyle" html="67" ath="-90.175" atv="43.100"/>
+    <hotspot name="ficha68" style="skin_hotspotstyle" html="68" ath="-86.967" atv="41.765"/>
+    <hotspot name="ficha69" style="skin_hotspotstyle" html="69" ath="-83.751" atv="40.332"/>
+    <hotspot name="ficha70" style="skin_hotspotstyle" html="70" ath="-80.018" atv="38.502"/>
+    <hotspot name="ficha71" style="skin_hotspotstyle" html="71" ath="-78.503" atv="36.037"/>
+    <hotspot name="ficha72" style="skin_hotspotstyle" html="72" ath="-83.773" atv="36.855"/>
+    <hotspot name="ficha73" style="skin_hotspotstyle" html="73" ath="-88.868" atv="37.394"/>
+    <hotspot name="ficha74" style="skin_hotspotstyle" html="74" ath="-92.579" atv="37.689"/>
+    <hotspot name="ficha75" style="skin_hotspotstyle" html="75" ath="-95.904" atv="38.198"/>
+    <hotspot name="ficha76" style="skin_hotspotstyle" html="76" ath="-98.675" atv="38.733"/>
+    <hotspot name="ficha77" style="skin_hotspotstyle" html="77" ath="-101.668" atv="39.394"/>
+    <hotspot name="ficha78" style="skin_hotspotstyle" html="78" ath="-104.929" atv="39.938"/>
+    <hotspot name="ficha79" style="skin_hotspotstyle" html="79" ath="-107.366" atv="40.703"/>
+    <hotspot name="ficha80" style="skin_hotspotstyle" html="80" ath="-110.096" atv="41.746"/>
+    <hotspot name="ficha81" style="skin_hotspotstyle" html="81" ath="-113.530" atv="41.819"/>
+    <hotspot name="ficha82" style="skin_hotspotstyle" html="82" ath="-116.321" atv="42.116"/>
+    <hotspot name="ficha83" style="skin_hotspotstyle" html="83" ath="-120.337" atv="42.424"/>
+    <hotspot name="ficha84" style="skin_hotspotstyle" html="84" ath="-123.461" atv="44.106"/>
+    <hotspot name="ficha85" style="skin_hotspotstyle" html="85" ath="-126.877" atv="45.727"/>
+
+
+
+
+	</scene>
+
+	 <scene name="scene_1" title="Vista 1" onstart="mostrar_btn_vistageneral(true);" thumburl="panos/1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-310.064" vlookat="18.989" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+	
+
+	</scene>
+
+		 <scene name="scene_2" title="Vista 2" onstart="mostrar_btn_vistageneral(true);" thumburl="panos/2.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-310.064" vlookat="18.989" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+	
+
+	</scene>
+
+		 <scene name="scene_3" title="Vista 3" onstart="mostrar_btn_vistageneral(true);" thumburl="panos/3.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="-310.064" vlookat="18.989" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
+ />
+
+		<preview url="panos/3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/3.tiles/pano_%s.jpg" />
+		</image>
+
+		<!-- place your scene hotspots here -->
+
+
+	
+
+	</scene>
+
+
+	
+	
+
+
+<style name="animation-hotspot" url="skin/spots/spot0.png" crop="0|0|64|64" framewidth="64" frameheight="64" frame="0" lastframe="19" scale="0.8" onloaded="hotspot_animate();"/>
+<action name="hotspot_animate"> inc(frame,1,get(lastframe),0); mul(ypos,frame,frameheight); txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight)); delayedcall(0.03, if(loaded, hotspot_animate() ) ); </action>
+
+
+	
+
+
+
+
+</krpano>
