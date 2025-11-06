@@ -1,7 +1,8 @@
 import React from 'react';
 import Logo from './Logo';
 import ContactMenu from './ContactMenu';
-import MapboxRadar from './MapboxRadar';
+import KrpanoMap from './KrpanoMap';
+import MapboxMap from './MapboxMap';
 
 const TourOverlay = () => {
   return (
@@ -14,32 +15,43 @@ const TourOverlay = () => {
       pointerEvents: 'none', // No interfiere con la interacción del tour
       zIndex: 1001 // Encima del tour pero debajo de cualquier modal
     }}>
-      {/* Menú de contacto en la esquina superior izquierda */}
-      <div style={{ pointerEvents: 'auto' }}>
-        <ContactMenu />
-      </div>
-
-      {/* Logo del proyecto en la esquina superior derecha */}
+      {/* Logo del proyecto en la esquina superior izquierda */}
       <div style={{
         position: 'absolute',
         top: '20px',
-        right: '20px',
-        pointerEvents: 'auto' // Permitir interacción con el logo
+        left: '20px',
+        pointerEvents: 'auto',
       }}>
         <Logo 
-          variant="white" 
-          size="medium"
+          size="large"
           sx={{
-            filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))', // Sombra para mejor visibilidad
-            maxHeight: '60px',
-            width: 'auto'
+            margin: 0,
+            padding: 0,
           }}
         />
       </div>
 
-      {/* Mapa radar de Mapbox */}
-      <div style={{ pointerEvents: 'auto' }}>
-        <MapboxRadar />
+      {/* Contenedor de iconos centrados verticalmente a la izquierda */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '20px',
+        transform: 'translateY(-50%)',
+        pointerEvents: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        gap: '16px',
+      }}>
+        {/* Ícono de información */}
+        <ContactMenu />
+        
+        {/* Mapa externo Mapbox */}
+        <MapboxMap />
+        
+        {/* Planta/Minimap Krpano */}
+        <KrpanoMap />
       </div>
     </div>
   );

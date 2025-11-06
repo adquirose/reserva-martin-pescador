@@ -10,69 +10,46 @@ const KrpanoTour = () => {
 
   // Función para configurar los eventos de Krpano que se comunicarán con el mapa
   const setupKrpanoEvents = (krpano) => {
-    // Evento cuando cambia la escena
-    krpano.addEventListener('onxmlcomplete', () => {
-      const currentScene = krpano.get('xml.scene');
-      if (currentScene) {
-        // Disparar evento personalizado para el mapa
-        window.dispatchEvent(new CustomEvent('krpano-scene-change', {
-          detail: { scene: currentScene }
-        }));
-      }
-    });
+    let lastScene = null;
+    let lastAth = null;
 
-    // Evento cuando cambia la vista (dirección de la cámara)
-    const updateViewDirection = () => {
+    // Función para monitorear cambios en Krpano
+    const monitorKrpano = () => {
       try {
-        const ath = krpano.get('view.hlookat'); // Dirección horizontal
-        const atv = krpano.get('view.vlookat'); // Dirección vertical
-        const fov = krpano.get('view.fov');     // Campo de visión
         const currentScene = krpano.get('xml.scene');
+        const ath = krpano.get('view.hlookat');
+        const fov = krpano.get('view.fov');
 
-        if (ath !== null && atv !== null && fov !== null) {
-          window.dispatchEvent(new CustomEvent('krpano-view-change', {
-            detail: { 
-              ath: parseFloat(ath), 
-              atv: parseFloat(atv), 
-              fov: parseFloat(fov),
-              scene: currentScene
-            }
-          }));
-        }
-      } catch (error) {
-        console.warn('Error obteniendo dirección de vista:', error);
-      }
-    };
-
-    // Actualizar dirección cada 100ms mientras se mueve la vista
-    let viewUpdateInterval;
-    krpano.addEventListener('onviewchange', () => {
-      if (viewUpdateInterval) {
-        clearInterval(viewUpdateInterval);
-      }
-      viewUpdateInterval = setInterval(updateViewDirection, 100);
-      
-      // Parar después de 1 segundo de inactividad
-      setTimeout(() => {
-        if (viewUpdateInterval) {
-          clearInterval(viewUpdateInterval);
-          viewUpdateInterval = null;
-        }
-      }, 1000);
-    });
-
-    // También actualizar cuando se carga una nueva escena
-    krpano.addEventListener('onloadcomplete', () => {
-      setTimeout(() => {
-        const currentScene = krpano.get('xml.scene');
-        if (currentScene) {
+        // Verificar si cambió la escena
+        if (currentScene && currentScene !== lastScene) {
+          lastScene = currentScene;
           window.dispatchEvent(new CustomEvent('krpano-scene-change', {
             detail: { scene: currentScene }
           }));
-          updateViewDirection();
         }
-      }, 100);
-    });
+
+        // Verificar si cambió la dirección (solo si hay diferencia significativa)
+        if (ath !== null && fov !== null) {
+          const athNum = parseFloat(ath);
+          if (lastAth === null || Math.abs(athNum - lastAth) > 2) {
+            lastAth = athNum;
+            window.dispatchEvent(new CustomEvent('krpano-view-change', {
+              detail: { 
+                ath: athNum, 
+                fov: parseFloat(fov),
+                scene: currentScene
+              }
+            }));
+          }
+        }
+      } catch {
+        // Silenciar errores de monitoreo para no spam en consola
+      }
+    };
+
+    // Monitoreo inicial y periódico
+    setTimeout(monitorKrpano, 1000); // Primera actualización después de 1 segundo
+    setInterval(monitorKrpano, 500); // Actualizar cada 500ms
   };
 
   useEffect(() => {

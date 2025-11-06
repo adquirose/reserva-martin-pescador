@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Fab,
-  Menu,
-  MenuItem,
+  Modal,
   Typography,
   Divider,
-  IconButton,
+  Fab,
   Paper,
   List,
   ListItem,
@@ -15,25 +13,26 @@ import {
   Link
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
+  Info as InfoIcon,
   Person as PersonIcon,
   Phone as PhoneIcon,
   WhatsApp as WhatsAppIcon,
   Email as EmailIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  Explore as ExploreIcon,
+  LocationOn as LocationOnIcon
 } from '@mui/icons-material';
 import grupoMartinPescadorLogo from '../assets/grupo-martinpescador.png';
 
 const ContactMenu = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [open, setOpen] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
 
   const handleWhatsAppClick = () => {
@@ -54,188 +53,365 @@ const ContactMenu = () => {
     handleClose();
   };
 
+  const handleWazeClick = () => {
+    // Coordenadas del proyecto Martín Pescador
+    const lat = -42.6736055;
+    const lng = -73.9892090;
+    const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes&zoom=17`;
+    window.open(wazeUrl, '_blank');
+    handleClose();
+  };
+
+  const handleGoogleMapsClick = () => {
+    // Coordenadas del proyecto Martín Pescador
+    const lat = -42.6736055;
+    const lng = -73.9892090;
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+    window.open(googleMapsUrl, '_blank');
+    handleClose();
+  };
+
   return (
     <>
       <Fab
-        color="primary"
-        aria-label="menú de contacto"
+        aria-label="información de contacto"
         onClick={handleClick}
+        title="Información y contacto"
         sx={{
-          position: 'fixed',
-          top: 20,
-          left: 20,
-          zIndex: 1002,
-          backgroundColor: 'rgba(25, 118, 210, 0.9)',
+          width: { xs: 40, sm: 48 },
+          height: { xs: 40, sm: 48 },
+          backgroundColor: 'rgba(33, 150, 243, 0.9)', // Azul vibrante
+          border: '2px solid white',
+          color: 'white',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           '&:hover': {
-            backgroundColor: 'rgba(25, 118, 210, 1)',
+            backgroundColor: 'rgba(33, 150, 243, 1)',
+            transform: 'scale(1.05)',
+            boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
           },
+          '&:focus': {
+            outline: 'none',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          },
+          '&:focus-visible': {
+            outline: 'none',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          },
+          transition: 'all 0.2s ease',
         }}
       >
-        <MenuIcon />
+        <InfoIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
       </Fab>
 
-      <Menu
-        anchorEl={anchorEl}
+      <Modal
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          sx: {
-            minWidth: 320,
-            maxWidth: 400,
-            mt: 1,
-            '& .MuiMenuItem-root': {
-              px: 0,
-            },
-          },
-        }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
+        <Paper
+          sx={{
+            minWidth: 320,
+            maxWidth: 380,
+            width: '90%',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+            outline: 'none',
+          }}
+        >
         <Box sx={{ p: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            mb: 2,
+            pb: 1,
+            borderBottom: '2px solid',
+            borderColor: 'primary.main'
+          }}>
             <Typography variant="h6" color="primary" fontWeight="bold">
               Información de Contacto
             </Typography>
-            <IconButton size="small" onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
+            <Fab 
+              size="small" 
+              onClick={handleClose}
+              sx={{
+                backgroundColor: 'rgba(0,0,0,0.05)',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.1)' },
+                width: 32,
+                height: 32,
+                minHeight: 32,
+              }}
+            >
+              <CloseIcon sx={{ fontSize: '1rem' }} />
+            </Fab>
           </Box>
 
           <List sx={{ p: 0 }}>
-            <ListItem sx={{ px: 0, pb: 1 }}>
-              <ListItemIcon>
-                <PersonIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Valentina Hernández"
-                secondary="Ejecutiva Comercial"
-                primaryTypographyProps={{ fontWeight: 'medium' }}
-              />
-            </ListItem>
+            <Box sx={{ 
+              backgroundColor: 'rgba(25, 118, 210, 0.05)', 
+              borderRadius: '8px', 
+              p: 1.5, 
+              mb: 2 
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Box sx={{
+                  backgroundColor: 'primary.main',
+                  borderRadius: '50%',
+                  p: 0.8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <PersonIcon sx={{ color: 'white', fontSize: '1.2rem' }} />
+                </Box>
+                <Box>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">
+                    Valentina Hernández
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Ejecutiva Comercial
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
 
-            <Divider sx={{ my: 1 }} />
-
-            <ListItem sx={{ px: 0 }}>
-              <ListItemIcon>
-                <PhoneIcon color="success" />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <Link 
-                    href="tel:+56981208442" 
-                    underline="none" 
-                    color="inherit"
-                    onClick={handlePhoneClick}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    +56 9 8120 8442
-                  </Link>
+            <Box sx={{ display: 'flex', gap: 1.5, mb: 2 }}>
+              <Box sx={{
+                flex: 1,
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                borderRadius: '8px',
+                p: 1.5,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                '&:hover': { 
+                  backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                  transform: 'translateY(-2px)'
                 }
-                secondary="Teléfono directo"
-              />
-            </ListItem>
-
-            <ListItem sx={{ px: 0 }}>
-              <ListItemIcon>
-                <WhatsAppIcon sx={{ color: '#25D366' }} />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <Link 
-                    onClick={handleWhatsAppClick}
-                    underline="none" 
-                    color="inherit"
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    Enviar WhatsApp
-                  </Link>
+              }}
+              onClick={handlePhoneClick}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <PhoneIcon color="success" />
+                  <Box>
+                    <Typography variant="body2" fontWeight="medium">
+                      Llamar
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      +56 9 8120 8442
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              
+              <Box sx={{
+                flex: 1,
+                backgroundColor: 'rgba(37, 211, 102, 0.1)',
+                borderRadius: '8px',
+                p: 1.5,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                '&:hover': { 
+                  backgroundColor: 'rgba(37, 211, 102, 0.2)',
+                  transform: 'translateY(-2px)'
                 }
-                secondary="+56 9 8120 8442"
-              />
-            </ListItem>
+              }}
+              onClick={handleWhatsAppClick}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <WhatsAppIcon sx={{ color: '#25D366' }} />
+                  <Box>
+                    <Typography variant="body2" fontWeight="medium">
+                      WhatsApp
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Mensaje directo
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
 
-            <Divider sx={{ my: 1 }} />
-
-            <ListItem sx={{ px: 0 }}>
-              <ListItemIcon>
-                <EmailIcon color="info" />
-              </ListItemIcon>
-              <ListItemText
-                primary={
+            <Box sx={{ 
+              backgroundColor: 'rgba(33, 150, 243, 0.05)', 
+              borderRadius: '8px', 
+              p: 1.5, 
+              mb: 2 
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+                <Box sx={{
+                  backgroundColor: 'info.main',
+                  borderRadius: '50%',
+                  p: 0.8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mt: 0.2
+                }}>
+                  <EmailIcon sx={{ color: 'white', fontSize: '1.1rem' }} />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" fontWeight="medium" color="text.primary" sx={{ mb: 0.5 }}>
+                    Correos electrónicos
+                  </Typography>
                   <Link 
                     href="mailto:vhernandez@hfo.cl"
-                    underline="none" 
-                    color="inherit"
+                    underline="hover" 
+                    color="info.main"
                     onClick={() => handleEmailClick('vhernandez@hfo.cl')}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ cursor: 'pointer', fontSize: '0.9rem', display: 'block', mb: 0.3 }}
                   >
                     vhernandez@hfo.cl
                   </Link>
-                }
-                secondary="Email personal"
-              />
-            </ListItem>
-
-            <ListItem sx={{ px: 0 }}>
-              <ListItemIcon>
-                <EmailIcon color="info" />
-              </ListItemIcon>
-              <ListItemText
-                primary={
                   <Link 
                     href="mailto:huillinco@grupomartinpescador.cl"
-                    underline="none" 
-                    color="inherit"
+                    underline="hover" 
+                    color="info.main"
                     onClick={() => handleEmailClick('huillinco@grupomartinpescador.cl')}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ cursor: 'pointer', fontSize: '0.9rem', display: 'block' }}
                   >
                     huillinco@grupomartinpescador.cl
                   </Link>
-                }
-                secondary="Email proyecto"
-              />
-            </ListItem>
+                </Box>
+              </Box>
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.primary',
+                  fontWeight: 'bold',
+                  mb: 1.5,
+                  textAlign: 'center',
+                  fontSize: '1rem'
+                }}
+              >
+                ¿Cómo llegar al proyecto?
+              </Typography>
+
+              <Box sx={{ display: 'flex', gap: 1.5 }}>
+                <Box sx={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                  borderRadius: '8px',
+                  p: 1.5,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(0, 212, 170, 0.2)',
+                    transform: 'translateY(-2px)'
+                  }
+                }}
+                onClick={handleWazeClick}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <ExploreIcon 
+                      sx={{ 
+                        color: '#ffffff',
+                        backgroundColor: '#00D4AA',
+                        borderRadius: '50%',
+                        padding: '6px',
+                        fontSize: '28px'
+                      }} 
+                    />
+                    <Box>
+                      <Typography variant="body2" fontWeight="medium">
+                        Waze
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Navegación GPS
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+
+                <Box sx={{
+                  flex: 1,
+                  backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                  borderRadius: '8px',
+                  p: 1.5,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(234, 67, 53, 0.2)',
+                    transform: 'translateY(-2px)'
+                  }
+                }}
+                onClick={handleGoogleMapsClick}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationOnIcon 
+                      sx={{ 
+                        color: '#ffffff',
+                        backgroundColor: '#EA4335',
+                        borderRadius: '20%',
+                        padding: '6px',
+                        fontSize: '28px'
+                      }} 
+                    />
+                    <Box>
+                      <Typography variant="body2" fontWeight="medium">
+                        Google Maps
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Ver ubicación
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
           </List>
 
-          <Divider sx={{ my: 2 }} />
-
-          {/* Branding "Un proyecto de" dentro del menú */}
-          <Box sx={{ textAlign: 'center', pt: 1 }}>
+          <Box sx={{ 
+            borderTop: '1px solid', 
+            borderColor: 'divider', 
+            pt: 2, 
+            textAlign: 'center' 
+          }}>
             <Typography
               variant="body2"
               sx={{
-                color: '#666',
+                color: 'text.secondary',
                 fontWeight: 'medium',
-                mb: 1
+                mb: 1.5
               }}
             >
               Un proyecto de
             </Typography>
             
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              p: 1,
+              backgroundColor: 'rgba(25, 118, 210, 0.05)',
+              borderRadius: '8px'
+            }}>
               <Box
                 component="img"
                 src={grupoMartinPescadorLogo}
                 alt="Grupo Martín Pescador"
                 sx={{
-                  maxHeight: '60px',
+                  maxHeight: '50px',
                   width: 'auto',
-                  backgroundColor: '#1976d2', // Fondo azul para contrastar con logo blanco
+                  backgroundColor: '#1976d2',
                   padding: '8px 12px',
                   borderRadius: '6px',
-                  filter: 'brightness(1.1)' // Realzar el logo
+                  filter: 'brightness(1.1)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                 }}
               />
             </Box>
           </Box>
         </Box>
-      </Menu>
+        </Paper>
+      </Modal>
     </>
   );
 };
