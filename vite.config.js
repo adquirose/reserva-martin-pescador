@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    strictPort: true, // No permitir otros puertos
     host: true,
     proxy: {
       '/api/panos': {

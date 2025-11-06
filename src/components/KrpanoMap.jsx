@@ -13,12 +13,8 @@ const KrpanoMap = () => {
 
 
   const toggleMap = () => {
-    console.log(`🔄 Estado actual del mapa: ${mapState}`);
-    
     if (mapState === 'hidden') {
       // Paso 1: Invisible → Minimizado (directamente)
-      console.log('✅ Mostrando mapa minimizado...');
-      
       const krpanoInstance = getKrpanoInstance();
       if (krpanoInstance) {
         krpanoInstance.call('mostrar_mapa_minimizado()'); // Mostrar directamente minimizado
@@ -27,8 +23,6 @@ const KrpanoMap = () => {
       setMapState('minimized');
     } else if (mapState === 'minimized') {
       // Paso 2: Minimizado → Maximizado
-      console.log('📈 Maximizando mapa...');
-      
       const krpanoInstance = getKrpanoInstance();
       if (krpanoInstance) {
         krpanoInstance.call('max_planta()'); // Maximizar
@@ -37,8 +31,6 @@ const KrpanoMap = () => {
       setMapState('visible');
     } else {
       // Paso 3: Maximizado → Invisible (ocultar completamente)
-      console.log('❌ Ocultando mapa...');
-      
       const krpanoInstance = getKrpanoInstance();
       if (krpanoInstance) {
         krpanoInstance.set('layer[mapcontainer].visible', false);

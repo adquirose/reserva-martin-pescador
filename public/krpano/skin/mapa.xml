@@ -1,16 +1,16 @@
+<krpano debugmode="false">
 
+    <!-- Eventos del mapa -->
+    <events onnewpano="" />
 
-<krpano>
-
+    <!-- Acción para minimizar la planta -->
     <action name="min_planta">
         tween(layer[mapcontainer].scale, 0.5, 0.5, easeOutQuint);
         tween(layer[map].scale, 0.5, 0.5, easeOutQuint);
         tween(layer[radar].scale, 0.5, 0.5, easeOutQuint);
-        tween(layer[btn_min].x, 0, 0.5, easeOutQuint);
-        tween(layer[flecha].rotate, 180, 0.1, easeOutQuint);
-        <!--set(layer[map].enabled,false);-->
-        set(layer[flecha].onclick,max_planta());
     </action>
+
+    <!-- Acción para maximizar la planta -->
     <action name="max_planta">
         if(device.desktop,
             tween(layer[mapcontainer].scale, 1, 0.5, easeOutQuint);
@@ -22,73 +22,104 @@
             tween(layer[map].scale, 0.6, 0.5, easeOutQuint);
             tween(layer[radar].scale, 0.3, 0.5, easeOutQuint);
         );
-        
-        tween(layer[btn_min].x, 0, 0.5, easeOutQuint);
-        tween(layer[flecha].rotate, 0, 0.1, easeOutQuint);
-        <!--set(layer[map].enabled,true);-->
-        set(layer[flecha].onclick,min_planta());
     </action>
+    <!-- Contenedor principal del mapa -->
+    <layer name="mapcontainer" scale="1" keep="true" visible="false" children="true" type="container" 
+           bgcolor="0x000000" bgalpha="0.6" align="righttop" edge="righttop" x="0" y="0" width="155" height="410">
+    
 
-<!-- the image map -->
-
-    <layer name="mapcontainer" scale.mobile="0.6" scale.normal="1" keep="true" visible="true" children="true" type="container" bgcolor="0x000000" bgalpha="0.6" align="righttop" edge="righttop" x="0" y="0" width="155" height="410">
-        <layer name="btn_min" keep="true" url="map/fondo1.png" align="lefttop" edge="right" x="0" y="30" visible="true" zorder="5">
-            <layer name="flecha" url="map/flecha.png" align="center" edge="center" visible="true" zorder="6" onclick="min_planta();"/>
-        </layer>
-        <layer name="map" scale.mobile="0.6" scale.normal="1" url="map/planta.png" align="righttop" x="4" y="4" width="145" height="400" handcursor="false">
-            <!-- radar mask container -->
-            <layer name="radarmask"  type="container" align="lefttop" width="100%" height="100%" maskchildren="true">
-
-                <!-- radar plugin (usando versión JavaScript directamente) -->
-                <layer name="radar" visible="false"
-                       url="../plugins/radar.js"
-                       align="lefttop" edge="center" zorder="1"
-                       scale="1.0"
-                       fillcolor="0xFFFFFF" fillalpha="0.4"
-                       linecolor="0xFF0000" linewidth="0.5" linealpha="0.5"
-                       headingoffset="0"
-                       />
-
-                <!-- the spots (zorder=2) -->
-                <layer name="spot-e1" url="map/spot0.png" scale="0.35" onhover="showtext(Master Plan 360º Vista Etapa 1);" align="lefttop" edge="center" x="90%" y="25%" zorder="2" onclick="loadscene(scene_e1, null, MERGE, BLEND(1));" />
-                <layer name="spot-e2" url="map/spot0.png" scale="0.35" onhover="showtext(Master Plan 360º Vista Etapa 2);" align="lefttop" edge="center" x="62%" y="42%" zorder="2" onclick="loadscene(scene_e2, null, MERGE, BLEND(1));" />    
-                <layer name="spot-e3" url="map/spot0.png" scale="0.35" onhover="showtext(Master Plan 360º Vista Etapa 3);" align="lefttop" edge="center" x="50%" y="60%" zorder="2" onclick="loadscene(scene_e3, null, MERGE, BLEND(1));" />
-                <layer name="spot-e4" url="map/spot0.png" scale="0.35" onhover="showtext(Master Plan 360º Vista Etapa 4);" align="lefttop" edge="center" x="42%" y="93%" zorder="2" onclick="loadscene(scene_e4, null, MERGE, BLEND(1));" />
-
-                <!-- activated spot image (zorder=3 and hidden at start) -->
-                <layer name="activespot" url="map/mappointactive.png" align="lefttop" scale="0.35" edge="center" ox="0" oy="0" zorder="3" visible="false" />
-            </layer>
+    <!-- Imagen del mapa/planta -->
+    <layer name="map" scale="1" url="map/planta.png" align="righttop" 
+           x="4" y="4" width="145" height="400" handcursor="false">
+        
+        <!-- Contenedor de máscara del radar -->
+        <layer name="radarmask" type="container" align="lefttop" width="100%" height="100%" maskchildren="true">
+            
+            <!-- Plugin del radar (zorder=1 y oculto al inicio) -->
+            <layer name="radar" visible="false" url="../plugins/radar.js" align="lefttop" edge="center" 
+                   zorder="1" scale="1.0" fillcolor="0xFFFFFF" fillalpha="0.4" linecolor="0xFF0000" 
+                   linewidth="0.5" linealpha="0.5" headingoffset="0"/>
+            
+            <!-- Los puntos/spots del mapa (zorder=2) -->
+            <layer name="spot-e1" url="map/spot0.png" scale="0.35" 
+                   onhover="showtext(Master Plan 360º Vista Etapa 1);" 
+                   align="lefttop" edge="center" x="90%" y="25%" zorder="2" 
+                   onclick="loadscene(scene_e1, null, MERGE, BLEND(1));"/>
+            
+            <layer name="spot-e2" url="map/spot0.png" scale="0.35" 
+                   onhover="showtext(Master Plan 360º Vista Etapa 2);" 
+                   align="lefttop" edge="center" x="62%" y="42%" zorder="2" 
+                   onclick="loadscene(scene_e2, null, MERGE, BLEND(1));"/>
+            
+            <layer name="spot-e3" url="map/spot0.png" scale="0.35" 
+                   onhover="showtext(Master Plan 360º Vista Etapa 3);" 
+                   align="lefttop" edge="center" x="58%" y="60%" zorder="2" 
+                   onclick="loadscene(scene_e3, null, MERGE, BLEND(1));"/>
+            
+            <layer name="spot-e4" url="map/spot0.png" scale="0.35" 
+                   onhover="showtext(Master Plan 360º Vista Etapa 4);" 
+                   align="lefttop" edge="center" x="42%" y="93%" zorder="2" 
+                   onclick="loadscene(scene_e4, null, MERGE, BLEND(1));"/>
+            
+            <!-- Imagen del spot activo (zorder=3 y oculto al inicio) -->
+            <layer name="activespot" url="map/mappointactive.png" align="lefttop" scale="0.35" 
+                   edge="center" ox="0" oy="0" zorder="3" visible="false"/>
         </layer>
     </layer>
-
-    <!-- activatespot action - %1 = the current spot, %2 = the current radar heading -->
+    </layer>
+    <!-- Acción para activar spot - %1 = spot actual, %2 = dirección del radar -->
     <action name="activatespot">
         if(%1 == false,
-            <!-- hide the radar and the activespot -->
-            set(layer[radar].visible, false);
+            <!-- Ocultar el radar y el activespot -->
+            set(layer[radar].visible, false); 
             set(layer[activespot].visible, false);
-            ,
-            <!-- copy the spot position to the radar and activespot position -->
-            set(layer[mapcontainer].visible,true);
-            copy(layer[radar].x, layer[%1].x);
-            copy(layer[radar].y, layer[%1].y);
-            copy(layer[activespot].x, layer[%1].x);
+        ,
+            <!-- Copiar la posición del spot al radar y activespot -->
+            <!-- Nota: No forzamos la visibilidad del mapcontainer aquí -->
+            copy(layer[radar].x, layer[%1].x); 
+            copy(layer[radar].y, layer[%1].y); 
+            copy(layer[activespot].x, layer[%1].x); 
             copy(layer[activespot].y, layer[%1].y);
-
-            <!-- set the radar heading -->
+            <!-- Establecer la dirección del radar -->
             set(layer[radar].heading, %2);
-
-            <!-- show the radar and the activespot -->
-            set(layer[radar].visible, true);
-            set(layer[activespot].visible, true);
+            <!-- Mostrar el radar y el activespot solo si el mapa está visible -->
+            if(layer[mapcontainer].visible == true,
+                set(layer[radar].visible, true); 
+                set(layer[activespot].visible, true);
+            );
         );
-        
-
     </action>
-
+    <!-- Acción para mostrar el mapa -->
     <action name="mostrar_mapa">
-        set(layer[mapcontainer].visible,%1);
+        set(layer[mapcontainer].visible, true);
+        set(layer[mapcontainer].alpha, 1);
+        set(layer[map].visible, true);
+        set(layer[radar].visible, true);
     </action>
 
+    <!-- Acción para mostrar el mapa directamente minimizado -->
+    <action name="mostrar_mapa_minimizado">
+        set(layer[mapcontainer].visible, true);
+        set(layer[mapcontainer].alpha, 1);
+        set(layer[mapcontainer].scale, 0.5);
+        set(layer[map].visible, true);
+        set(layer[map].scale, 0.5);
+        set(layer[radar].visible, true);
+        set(layer[radar].scale, 0.5);
+    </action>
+
+    <!-- Acción para alternar el radar desde React -->
+    <action name="toggle_radar_react">
+        if(layer[radar].visible,
+            set(layer[radar].visible, false);
+        ,
+            set(layer[radar].visible, true);
+        );
+    </action>
+
+    <!-- Acción de prueba para logging -->
+    <action name="test_logging">
+        <!-- Debug output disabled for production -->
+    </action>
 
 </krpano>

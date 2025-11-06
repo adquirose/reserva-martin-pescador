@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano>
+    <!-- Acciones de debugging para React -->
+    <action name="debug_layers">
+        trace('=== DEBUG: Listando todas las capas ===');
+        trace('Total layers: ' + layer.count);
+        for(set(i,0), i LT layer.count, inc(i),
+            trace('Layer[' + i + ']: name=' + layer[get(i)].name + ', visible=' + layer[get(i)].visible + ', scale=' + layer[get(i)].scale);
+        );
+        trace('=== FIN DEBUG ===');
+    </action>
+
+    <action name="debug_mapcontainer">
+        trace('=== DEBUG: Estado del mapcontainer ===');
+        if(layer[mapcontainer] !== null,
+            trace('mapcontainer existe:');
+            trace('  visible: ' + layer[mapcontainer].visible);
+            trace('  scale: ' + layer[mapcontainer].scale);
+            trace('  x: ' + layer[mapcontainer].x);
+            trace('  y: ' + layer[mapcontainer].y);
+            trace('  width: ' + layer[mapcontainer].width);
+            trace('  height: ' + layer[mapcontainer].height);
+            ,
+            trace('ERROR: mapcontainer NO EXISTE');
+        );
+        trace('=== FIN DEBUG MAPCONTAINER ===');
+    </action>
+
+    <action name="debug_radar">
+        trace('=== DEBUG: Estado del radar ===');
+        if(layer[radar] !== null,
+            trace('radar existe:');
+            trace('  visible: ' + layer[radar].visible);
+            trace('  scale: ' + layer[radar].scale);
+            ,
+            trace('ERROR: radar NO EXISTE');
+        );
+        trace('=== FIN DEBUG RADAR ===');
+    </action>
+
+    <action name="test_force_hide_all">
+        trace('=== FORZAR OCULTAR TODO ===');
+        set(layer[mapcontainer].visible, false);
+        set(layer[map].visible, false);
+        set(layer[radar].visible, false);
+        trace('Todos los elementos ocultados forzadamente');
+    </action>
+
+    <action name="test_force_show_all">
+        trace('=== FORZAR MOSTRAR TODO ===');
+        set(layer[mapcontainer].visible, true);
+        set(layer[map].visible, true);
+        set(layer[radar].visible, true);
+        trace('Todos los elementos mostrados forzadamente');
+    </action>
+</krpano>

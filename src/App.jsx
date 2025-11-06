@@ -1,14 +1,11 @@
 import React from 'react'
-import KrpanoTour from './components/KrpanoTour'
-import TourOverlay from './components/TourOverlay'
+import { Krpano } from './components/Krpano'
 
 function App() {
-  // La aplicación ahora solo muestra el tour Krpano - sin vista alternativa
   return (
-    <>
-      <KrpanoTour />
-      <TourOverlay />
-    </>
+    <div style={{ height: '100vh', width: '100vw' }}>
+      <Krpano />
+    </div>
   )
 }
 

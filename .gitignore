@@ -25,3 +25,9 @@ dist-ssr
 
 # Krpano heavy image files (served from external server)
 public/krpano/panos/
+
+# Firebase configuration files (sensitive)
+.firebaserc
+firebase.json
+firestore.rules
+firestore.indexes.json

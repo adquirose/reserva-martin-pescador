@@ -8,14 +8,49 @@ const KrpanoTour = () => {
   const [error, setError] = useState(null);
   const containerId = useRef('krpano-container-' + Math.random().toString(36).substr(2, 9));
 
+  // Función para verificar si Krpano está realmente listo basado en la documentación oficial
+  const verifyKrpanoReadiness = (krpano) => {
+    try {
+      // Verificar métodos principales de la API según la documentación
+      if (!krpano || typeof krpano.call !== 'function' || typeof krpano.get !== 'function' || typeof krpano.set !== 'function') {
+        return false;
+      }
+
+      // Verificar que podemos acceder a variables básicas del sistema
+      const version = krpano.get('version');
+      if (!version) return false;
+
+      // Verificar que el view está disponible (usando variables documentadas)
+      const hlookat = krpano.get('view.hlookat');
+      if (hlookat === null || hlookat === undefined) return false;
+
+      // Verificar que el sistema de capas está funcionando
+      const layerCount = krpano.get('layer.count');
+      if (layerCount === null || layerCount === undefined) return false;
+
+      console.log('Krpano API completamente verificada:', { version, hlookat, layerCount });
+      return true;
+    } catch (error) {
+      console.warn('Error verificando Krpano API:', error);
+      return false;
+    }
+  };
+
   // Función para configurar los eventos de Krpano que se comunicarán con el mapa
   const setupKrpanoEvents = (krpano) => {
+    if (!verifyKrpanoReadiness(krpano)) {
+      console.warn('Krpano no está completamente listo, reintentando en 500ms...');
+      setTimeout(() => setupKrpanoEvents(krpano), 500);
+      return;
+    }
+
     let lastScene = null;
     let lastAth = null;
 
-    // Función para monitorear cambios en Krpano
+    // Función para monitorear cambios en Krpano usando variables documentadas
     const monitorKrpano = () => {
       try {
+        // Usar xml.scene según la documentación oficial
         const currentScene = krpano.get('xml.scene');
         const ath = krpano.get('view.hlookat');
         const fov = krpano.get('view.fov');
@@ -88,6 +123,16 @@ const KrpanoTour = () => {
               console.log('No hay instancia previa para limpiar');
             }
           }
+          
+          // Limpiar instancias huérfanas del DOM 
+          const existingInstances = document.querySelectorAll('[id*="krpanoSWF"]');
+          if (existingInstances.length > 0) {
+            console.log('🧹 Limpiando instancias previas del DOM');
+            existingInstances.forEach(el => {
+              console.log('Removiendo:', el.id);
+              el.remove();
+            });
+          }
 
           // Asignar ID único al contenedor
           krpanoRef.current.id = containerId.current;
@@ -101,12 +146,110 @@ const KrpanoTour = () => {
             passQueryParameters: true,
             mwheel: false,
             onready: (krpano) => {
-              krpanoInstance.current = krpano;
-              setLoading(false);
-              console.log('Krpano tour cargado exitosamente');
+              console.log('🚀 =============== KRPANO ONREADY EJECUTADO ===============');
+              console.log('🎉 Krpano instancia recibida:', krpano);
               
-              // Configurar eventos para sincronizar con el mapa
-              setupKrpanoEvents(krpano);
+              krpanoInstance.current = krpano;
+              
+              // CRÍTICO: Múltiples estrategias para establecer la referencia global
+              window.krpano = krpano;
+              window.krpanoInstance = krpano;  // ⭐ NUEVO: Para KrpanoMap.jsx
+              window.globalKrpano = krpano; // Respaldo adicional
+              
+              console.log('🌍 INSTANCIA EXPUESTA GLOBALMENTE:', window.krpanoInstance);
+              
+              // Asegurar que embedpano también tenga la referencia
+              if (window.embedpano && window.embedpano.get) {
+                // Forzar que embedpano mantenga la referencia
+                const krpanoId = containerId.current.replace('krpano-container-', 'krpano');
+                window.embedpano.instances = window.embedpano.instances || {};
+                window.embedpano.instances[krpanoId] = krpano;
+                window.embedpano.instances['krpano0'] = krpano; // Referencia estándar
+              }
+              
+              console.log('🔧 Krpano onready - Estableciendo referencias múltiples');
+              console.log('📦 krpano instance:', krpano);
+              console.log('🌍 window.krpano:', window.krpano);
+              console.log('🔄 window.globalKrpano:', window.globalKrpano);
+              console.log('🎯 Métodos disponibles:', {
+                call: typeof krpano?.call,
+                get: typeof krpano?.get, 
+                set: typeof krpano?.set
+              });
+              
+              // Usar función de verificación mejorada
+              const waitForFullReadiness = () => {
+                if (verifyKrpanoReadiness(krpano)) {
+                  setLoading(false);
+                  console.log('✅ Krpano completamente listo');
+                  
+                  // Re-establecer referencias múltiples por seguridad
+                  window.krpano = krpano;
+                  window.globalKrpano = krpano;
+                  
+                  // Verificar acceso inmediato
+                  console.log('🔍 Verificación final de acceso:', {
+                    windowKrpano: !!window.krpano,
+                    globalKrpano: !!window.globalKrpano,
+                    callMethod: typeof window.krpano?.call,
+                    getMethod: typeof window.krpano?.get,
+                    setMethod: typeof window.krpano?.set,
+                    embedpanoAccess: !!window.embedpano?.get?.('krpano0')
+                  });
+                  
+                  // Configurar eventos para sincronizar con el mapa
+                  setupKrpanoEvents(krpano);
+                  
+                  // Emitir evento personalizado con verificación completa
+                  const scene = krpano.get('xml.scene');
+                  const version = krpano.get('version');
+                  
+                  // Emitir evento inmediato y con delay
+                  const eventDetail = { 
+                    krpano: krpano, 
+                    scene: scene,
+                    version: version,
+                    windowKrpano: window.krpano,
+                    globalKrpano: window.globalKrpano
+                  };
+                  
+                  // Evento inmediato
+                  window.dispatchEvent(new CustomEvent('krpano-ready', { detail: eventDetail }));
+                  console.log('🚀 Evento krpano-ready emitido inmediatamente');
+                  
+                  // Evento con delay adicional para componentes lentos
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent('krpano-ready-delayed', { detail: eventDetail }));
+                    console.log('⏰ Evento krpano-ready-delayed emitido');
+                  }, 200);
+                  
+                  console.log('Evento krpano-ready emitido:', { scene, version });
+                  console.log('window.krpano establecido:', window.krpano);
+                  console.log('Verificando métodos:', {
+                    call: typeof krpano.call,
+                    get: typeof krpano.get,
+                    set: typeof krpano.set
+                  });
+                  
+                  // Verificar que window.krpano persiste después de un momento
+                  setTimeout(() => {
+                    console.log('Verificación después de 1s - window.krpano:', !!window.krpano);
+                    console.log('Verificación después de 1s - métodos:', {
+                      call: typeof window.krpano?.call,
+                      get: typeof window.krpano?.get,
+                      set: typeof window.krpano?.set
+                    });
+                  }, 1000);
+                } else {
+                  console.log('Krpano aún no está completamente listo, reintentando...');
+                  setTimeout(waitForFullReadiness, 200);
+                }
+              };
+              
+              // Comenzar verificación con delay inicial
+              setTimeout(waitForFullReadiness, 300);
+              
+              console.log('🏁 =============== FIN KRPANO ONREADY ===============');
             },
             onerror: (errorMsg) => {
               console.error('Error de Krpano:', errorMsg);
@@ -125,6 +268,7 @@ const KrpanoTour = () => {
       }
     };
 
+    // Inicializar Krpano al montar el componente
     initKrpano();
 
     // Cleanup al desmontar el componente
@@ -138,6 +282,7 @@ const KrpanoTour = () => {
         }
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

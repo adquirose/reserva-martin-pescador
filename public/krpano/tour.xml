@@ -4,10 +4,11 @@
 	<include url="skin/vistageneral.xml" />
 	<include url="plugins/showtext.xml" />
     <include url="skin/hotspots-actions.xml" />
-    <include url="skin/spots.xml" />
+    <!-- <include url="skin/spots.xml" /> -->
     <include url="skin/vtourskin_design_117.xml" />
-    <include url="skin/ficha.xml" />
+    <!-- <include url="skin/ficha.xml" /> -->
     <include url="skin/mapa.xml" />
+    <!-- <include url="skin/debug.xml" /> -->
 	<!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
 	<skin_settings maps="false"
 	               maps_type="bing"
@@ -121,9 +122,15 @@
 		loadscene(get(startscene), null, MERGE);
 	</action>
 
+	<!-- Acción de prueba para debugging -->
+	<action name="test_spots">
+		trace('🔧 Testing spots system...');
+		js(console.log('Krpano tour cargado, probando sistema de spots'));
+	</action>
 
 
-		 <scene name="scene_e4" title="Vista Etapa 4" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e4);generar_spots(17,17);generar_spots(19,22);generar_spots(30,31);" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e4.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		 <scene name="scene_e4" title="Vista Etapa 4" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e4,87.198);delayedcall(0.5, js(generar_spots(17,17))); delayedcall(0.7, js(generar_spots(19,22))); delayedcall(0.9, js(generar_spots(30,31)));" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e4.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="87.198" vlookat="20.287" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
  />
@@ -149,7 +156,7 @@
 
 	</scene>
 
-		 <scene name="scene_e3" title="Vista Etapa 3" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e3);generar_spots(12,16);generar_spots(28,29);" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e3.tiles/thumb.jpg" lat="" lng="" heading="">
+		 <scene name="scene_e3" title="Vista Etapa 3" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e3,-480.280);delayedcall(0.5, js(generar_spots(12,16))); delayedcall(0.7, js(generar_spots(28,29)));" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e3.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="-480.280" vlookat="19.206" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
  />
@@ -179,7 +186,7 @@
 
 
 
-		 <scene name="scene_e2" title="Vista Etapa 2" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e2);generar_spots(7,11);generar_spots(26,27);" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e2.tiles/thumb.jpg" lat="" lng="" heading="">
+		 <scene name="scene_e2" title="Vista Etapa 2" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e2,-210.916);delayedcall(0.5, js(generar_spots(7,11))); delayedcall(0.7, js(generar_spots(26,27)));" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e2.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="-210.916" vlookat="20.576" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
  />
@@ -212,7 +219,7 @@
 
 
 
-	 <scene name="scene_e1" title="Vista Etapa 1" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e1);generar_spots(1,6);generar_spots(23,25);" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e1.tiles/thumb.jpg" lat="" lng="" heading="">
+	 <scene name="scene_e1" title="Vista Etapa 1" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e1,-129.597);delayedcall(0.5, js(generar_spots(1,6))); delayedcall(0.7, js(generar_spots(23,25)));" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e1.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="-129.597" vlookat="11.465" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
  />
