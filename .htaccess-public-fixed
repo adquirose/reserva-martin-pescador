@@ -1,0 +1,55 @@
+# Configuración CORS para permitir acceso desde la aplicación
+<IfModule mod_headers.c>
+    # Dominios permitidos - INCLUYENDO reserva-martin-pescador
+    SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
+    SetEnvIf Origin "^https://reserva-martin-pescador\.onrender\.com$" CORS_ORIGIN=https://reserva-martin-pescador.onrender.com
+    SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" CORS_ORIGIN=https://lanube360-dev.onrender.com
+    SetEnvIf Origin "^http://localhost:5173$" CORS_ORIGIN=http://localhost:5173
+    SetEnvIf Origin "^https://localhost:5173$" CORS_ORIGIN=https://localhost:5173
+    SetEnvIf Origin "^http://127\.0\.0\.1:5173$" CORS_ORIGIN=http://127.0.0.1:5173
+    
+    # CORS para requests generales (NO para archivos específicos)
+    <If "%{REQUEST_URI} !~ m#\.(xml|js|swf|png|jpg|jpeg|gif)$#">
+        Header set Access-Control-Allow-Origin "%{CORS_ORIGIN}e" env=CORS_ORIGIN
+        Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
+        Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        Header set Access-Control-Max-Age "1728000"
+    </If>
+    
+    # Manejar preflight requests
+    <IfModule mod_rewrite.c>
+        RewriteCond %{REQUEST_METHOD} OPTIONS
+        RewriteRule ^(.*)$ - [E=CORS_ORIGIN:%{HTTP:Origin},R=200,L]
+    </IfModule>
+</IfModule>
+
+# Configuración específica para archivos de recursos - EVITA DUPLICADOS
+<FilesMatch "\.(xml|js|swf|png|jpg|jpeg|gif)$">
+    <IfModule mod_headers.c>
+        # EXCLUIR reserva-martin-pescador (tiene su propio .htaccess)
+        <If "%{REQUEST_URI} !~ m#^/temporales/reserva-martin-pescador2/#">
+            SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" FILE_CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
+            SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" FILE_CORS_ORIGIN=https://lanube360-dev.onrender.com
+            SetEnvIf Origin "^http://localhost:5173$" FILE_CORS_ORIGIN=http://localhost:5173
+            Header set Access-Control-Allow-Origin "%{FILE_CORS_ORIGIN}e" env=FILE_CORS_ORIGIN
+            Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        </If>
+    </IfModule>
+</FilesMatch>
+
+# Configuración de rewrite para SPA
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Manejar OPTIONS requests para CORS
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ - [R=200,L]
+    
+    # Reglas existentes para SPA
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule . /index.html [L]
+</IfModule>

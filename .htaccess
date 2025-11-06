@@ -1,0 +1,50 @@
+# Configuración CORS para permitir acceso desde la aplicación
+<IfModule mod_headers.c>
+    # 🔧 CORREGIDO: Agregar el dominio de producción fundo-la-dehesa.onrender.com
+    SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
+    SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" CORS_ORIGIN=https://lanube360-dev.onrender.com
+    SetEnvIf Origin "^http://localhost:5173$" CORS_ORIGIN=http://localhost:5173
+    SetEnvIf Origin "^https://localhost:5173$" CORS_ORIGIN=https://localhost:5173
+    SetEnvIf Origin "^http://127\.0\.0\.1:5173$" CORS_ORIGIN=http://127.0.0.1:5173
+    
+    # 🔧 Usar Header set (no always set) para evitar duplicados
+    Header set Access-Control-Allow-Origin "%{CORS_ORIGIN}e" env=CORS_ORIGIN
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
+    Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    Header set Access-Control-Max-Age "1728000"
+    
+    # 🔧 Manejar preflight requests con sintaxis compatible
+    <IfModule mod_rewrite.c>
+        RewriteCond %{REQUEST_METHOD} OPTIONS
+        RewriteRule ^(.*)$ - [E=CORS_ORIGIN:%{HTTP:Origin},R=200,L]
+    </IfModule>
+</IfModule>
+
+# 🔧 Configuración específica para archivos XML y recursos de Krpano
+<FilesMatch "\.(xml|js|swf|png|jpg|jpeg|gif)$">
+    <IfModule mod_headers.c>
+        # Para archivos específicos de Krpano - agregar el nuevo dominio
+        SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" FILE_CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
+        SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" FILE_CORS_ORIGIN=https://lanube360-dev.onrender.com
+        SetEnvIf Origin "^http://localhost:5173$" FILE_CORS_ORIGIN=http://localhost:5173
+        Header set Access-Control-Allow-Origin "%{FILE_CORS_ORIGIN}e" env=FILE_CORS_ORIGIN
+        Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+    </IfModule>
+</FilesMatch>
+
+# Configuración de rewrite para SPA
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # 🔧 Manejar OPTIONS requests para CORS
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ - [R=200,L]
+    
+    # Reglas existentes para SPA
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule . /index.html [L]
+</IfModule>
