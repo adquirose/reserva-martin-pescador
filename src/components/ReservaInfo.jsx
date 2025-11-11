@@ -32,7 +32,7 @@ const ReservaInfo = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={8}>
+      <Grid size={{ xs: 12, md: 8 }}>
         <Card elevation={3}>
           <CardContent>
             <Typography variant="h4" component="h2" gutterBottom>
@@ -75,7 +75,7 @@ const ReservaInfo = () => {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={4}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <Card elevation={3}>
           <CardContent>
             <Typography variant="h6" gutterBottom>

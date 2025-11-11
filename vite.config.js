@@ -14,6 +14,18 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/panos/, '/panos'),
         secure: true
+      },
+      // Proxy para Fundo de Hesa (soluciona CORS)
+      '/api/fundodehesa': {
+        target: 'https://lanube360.com/fundodehesa360',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/fundodehesa/, ''),
+        secure: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
       }
     }
   }

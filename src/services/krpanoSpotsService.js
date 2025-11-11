@@ -71,9 +71,16 @@ window.generar_spots = async (desde, hasta) => {
     const spotsParaGenerar = spots.filter(spot => {
       const numero = parseInt(spot.numero);
       const tieneVista = spot.krpano && spot.krpano[vista];
-      const enRango = numero >= desde && numero <= hasta;
       
-      return tieneVista && enRango;
+      // Para lotes numerados, verificar rango
+      if (!isNaN(numero)) {
+        const enRango = numero >= desde && numero <= hasta;
+        return tieneVista && enRango;
+      } 
+      // Para lotes alfanuméricos, incluir si tiene la vista correcta
+      else {
+        return tieneVista && spot.vista === vista;
+      }
     });
 
     console.log(`📍 Generando ${spotsParaGenerar.length} spots para ${vista} (${desde}-${hasta})`);
@@ -213,7 +220,7 @@ window.mostrarFicha = (numeroLote) => {
       // Preparar información completa del lote
       const infoBase = {
         ...lote,
-        superficie: lote.superficieLote || null,
+        superficie: lote.superficie || lote.superficieLote || null, // Prioridad: superficie > superficieLote
         precio: lote.precio || null, // Mantener null si no hay precio definido
         descripcion: lote.descripcion || `Lote ${lote.html || lote.numero} ubicado en la Etapa ${lote.etapa || 1} del proyecto Martin Pescador.`
       };
@@ -297,7 +304,7 @@ if (typeof window !== 'undefined') {
   // Funciones de repoblación de base de datos
   window.repoblar_base_datos = async () => {
     const { repoblarBaseDatos, verificarIntegridad } = await import('./repoblarDB.js');
-    console.log('🔄 Iniciando repoblación completa...');
+    console.log('🔄 Iniciando repoblación completa (datos hardcodeados)...');
     const result = await repoblarBaseDatos();
     console.log('📋 Resultado repoblación:', result);
     
@@ -315,11 +322,189 @@ if (typeof window !== 'undefined') {
     return result;
   };
 
+  // NUEVA FUNCIÓN: Repoblar desde archivos XML principales
+  window.repoblar_desde_xml = async () => {
+    const { repoblarCompletoFromXML } = await import('./repoblarFromXML.js');
+    console.log('📂 Iniciando repoblación desde archivos XML principales...');
+    console.log('📋 Fuente: /krpano/skin/data.xml + /krpano/skin/spots.xml');
+    
+    const result = await repoblarCompletoFromXML();
+    console.log('📊 Resultado repoblación XML:', result);
+    
+    if (result.exito_total) {
+      // Limpiar cache y recargar datos
+      window.spotsData = null;
+      await cargarSpotsData();
+      console.log('🔄 Cache limpiado y datos recargados desde XML');
+    }
+    
+    return result;
+  };
+
+  // NUEVA FUNCIÓN: Verificar datos XML
+  window.verificar_datos_xml = async () => {
+    const { loadAllLotesFromXML } = await import('./xmlMainParser.js');
+    console.log('📂 Verificando archivos XML principales...');
+    
+    try {
+      const { lotesArray, count } = await loadAllLotesFromXML();
+      console.log(`📊 Lotes encontrados en XML: ${count}`);
+      console.log(`📋 Números: ${lotesArray.map(l => l.numero).sort((a,b) => parseInt(a) - parseInt(b)).join(', ')}`);
+      
+      return {
+        success: true,
+        count,
+        numeros: lotesArray.map(l => l.numero).sort((a,b) => parseInt(a) - parseInt(b))
+      };
+    } catch (error) {
+      console.error('❌ Error verificando XML:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // NUEVA FUNCIÓN: Proceso completo simple
+  window.proceso_completo_simple = async () => {
+    console.log('🚀 Iniciando proceso completo simple...');
+    
+    try {
+      // 1. Repoblar desde XML
+      console.log('📂 Paso 1: Repoblando base de datos desde XML...');
+      const resultRepoblar = await window.repoblar_desde_xml();
+      
+      if (!resultRepoblar.exito_total) {
+        console.warn('⚠️ Repoblación tuvo errores, continuando de todas formas...');
+      }
+      
+      // 2. Cargar y pintar spots si krpano está disponible
+      if (window.krpano) {
+        console.log('🎯 Paso 2: Cargando spots en krpano...');
+        
+        const { cargarYPintarSpots } = await import('./simpleSpotsLoader.js');
+        const resultSpots = await cargarYPintarSpots();
+        
+        console.log('✅ Proceso completo finalizado:', {
+          repoblacion: resultRepoblar,
+          spots: resultSpots
+        });
+        
+        return {
+          success: true,
+          repoblacion: resultRepoblar,
+          spots: resultSpots,
+          message: 'Base de datos repoblada y spots cargados exitosamente'
+        };
+      } else {
+        console.log('⚠️ krpano no está disponible, solo se completó la repoblación');
+        return {
+          success: true,
+          repoblacion: resultRepoblar,
+          spots: null,
+          message: 'Base de datos repoblada. Spots se cargarán automáticamente al iniciar el tour.'
+        };
+      }
+      
+    } catch (error) {
+      console.error('❌ Error en proceso completo:', error);
+      return {
+        success: false,
+        error: error.message,
+        message: 'Error ejecutando el proceso completo'
+      };
+    }
+  };
+
+  // NUEVA FUNCIÓN: Verificar campos capturados del XML
+  window.verificar_campos_xml = async () => {
+    const { loadAllLotesFromXML } = await import('./xmlMainParser.js');
+    console.log('🔍 Verificando campos capturados del XML...');
+    
+    try {
+      const { lotesArray } = await loadAllLotesFromXML();
+      
+      // Mostrar ejemplo de los primeros 3 lotes
+      console.log('📋 Muestra de lotes capturados:');
+      lotesArray.slice(0, 3).forEach(lote => {
+        console.log(`\n📍 Lote ${lote.numero}:`);
+        console.log(`  Estado: ${lote.estado}`);
+        console.log(`  Superficie: ${lote.superficieTotal}${lote.unidadSuperficie || 'm²'}`);
+        console.log(`  Metros orilla: ${lote.superficieTransito || 'N/A'}`);
+        console.log(`  Precio: ${lote.precio || 'Consultar'}`);
+        console.log(`  Descripción: ${(lote.descripcion || '').substring(0, 100)}...`);
+        console.log(`  Vista: ${lote.vista}`);
+        console.log(`  Coordenadas: (${lote.ath}, ${lote.atv})`);
+      });
+      
+      // Resumen por campos
+      const resumen = {
+        total: lotesArray.length,
+        conSuperficie: lotesArray.filter(l => l.superficieTotal).length,
+        conOrilla: lotesArray.filter(l => l.superficieTransito).length,
+        conPrecio: lotesArray.filter(l => l.precio).length,
+        conDescripcion: lotesArray.filter(l => l.descripcion).length,
+        conCoordenadas: lotesArray.filter(l => l.ath && l.atv).length,
+        porVista: {
+          vista1: lotesArray.filter(l => l.vista === 'vista1').length,
+          vista2: lotesArray.filter(l => l.vista === 'vista2').length,
+          vista3: lotesArray.filter(l => l.vista === 'vista3').length,
+          vista4: lotesArray.filter(l => l.vista === 'vista4').length
+        }
+      };
+      
+      console.log('\n📊 Resumen de campos capturados:');
+      console.table(resumen);
+      
+      return { lotesArray, resumen };
+      
+    } catch (error) {
+      console.error('❌ Error verificando campos XML:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
   // Función para forzar recarga de datos
   window.recargar_spots_data = async () => {
     console.log('🔄 Forzando recarga de datos...');
     window.spotsData = null;
+    await cargarSpotsData();
+    console.log('✅ Datos recargados');
+    return window.spotsData ? window.spotsData.length : 0;
+  };
+
+  // Función para verificar lotes faltantes
+  window.verificar_lotes_faltantes = async () => {
+    const { verificarLotesFaltantes } = await import('./verificarLotes.js');
+    console.log('🔍 Verificando lotes faltantes...');
+    const result = await verificarLotesFaltantes();
+    console.log('📋 Resultado verificación:', result);
+    return result;
+  };
+
+  // Función para completar lotes faltantes
+  window.completar_lotes_faltantes = async () => {
+    const { completarLotesFaltantes } = await import('./verificarLotes.js');
+    console.log('🔧 Completando lotes faltantes...');
+    const result = await completarLotesFaltantes();
+    console.log('🎉 Lotes completados:', result);
+    return result;
+  };
+
+  // Función para contar lotes totales
+  window.contar_lotes_esperados = () => {
+    console.log('📊 Lotes esperados: 31 (números 1-31)');
+    console.log('📍 Distribución por vista:');
+    console.log('  Vista 1: 1,2,3,4,5,6,23,24,25 (9 lotes)');
+    console.log('  Vista 2: 7,8,9,10,11,26,27 (7 lotes)');
+    console.log('  Vista 3: 12,13,14,15,16,28,29 (7 lotes)');
+    console.log('  Vista 4: 17,18,19,20,21,22,30,31 (8 lotes)');
+    return 31;
+  };
+
+  // Función para forzar recarga de datos
+  window.recargar_spots_data = async () => {
+    console.log('🔄 Forzando recarga de datos...');
+    spotsData = null; // Limpiar cache local
     const datos = await cargarSpotsData();
+    window.spotsData = datos; // Hacer accesible globalmente
     console.log(`📊 Datos recargados: ${datos ? datos.length : 0} spots`);
     return datos;
   };
@@ -396,18 +581,21 @@ if (typeof window !== 'undefined') {
   window.verificar_estados_lotes = async () => {
     console.log('🔍 Verificando estados de lotes...');
     
-    if (!window.spotsData) {
+    if (!spotsData) {
       console.log('⏳ Cargando datos de lotes...');
       await cargarSpotsData();
     }
 
-    if (window.spotsData) {
-      console.log(`📋 Total de lotes: ${window.spotsData.length}`);
+    if (spotsData) {
+      console.log(`📋 Total de lotes: ${spotsData.length}`);
+      
+      // Hacer accesible globalmente para debugging
+      window.spotsData = spotsData;
       
       const estadosCuenta = {};
       const ejemplos = { disponible: [], vendido: [], reservado: [] };
       
-      window.spotsData.forEach(lote => {
+      spotsData.forEach(lote => {
         const estado = lote.estado || 'sin-estado';
         estadosCuenta[estado] = (estadosCuenta[estado] || 0) + 1;
         
@@ -425,11 +613,59 @@ if (typeof window !== 'undefined') {
         }
       });
       
-      return { estadosCuenta, total: window.spotsData.length };
+      return { estadosCuenta, total: spotsData.length };
     } else {
       console.error('❌ No se pudieron cargar los datos de lotes');
       return null;
     }
+  };
+  
+  // NUEVA FUNCIÓN: Debugging específico para vista 4
+  window.debug_vista4 = async () => {
+    console.log('🔍 === DEBUG VISTA 4 ===');
+    
+    // 1. Cargar datos si no están cargados
+    if (!spotsData) {
+      console.log('⏳ Cargando datos...');
+      await cargarSpotsData();
+      window.spotsData = spotsData;
+    }
+    
+    // 2. Verificar escena actual
+    const currentScene = window.krpano?.get('xml.scene');
+    const vista = sceneToVista[currentScene];
+    console.log(`🎬 Escena actual: ${currentScene} -> Vista: ${vista}`);
+    
+    // 3. Filtrar lotes para vista 4
+    const lotesVista4 = spotsData?.filter(spot => {
+      const tieneVista = spot.krpano && spot.krpano.vista4;
+      const esVista4 = spot.vista === 'vista4';
+      return tieneVista || esVista4;
+    });
+    
+    console.log(`📍 Lotes en vista 4: ${lotesVista4?.length || 0}`);
+    console.log(`📋 Números:`, lotesVista4?.map(s => s.numero));
+    
+    // 4. Verificar estructura krpano de cada lote
+    lotesVista4?.forEach(lote => {
+      console.log(`🔧 Lote ${lote.numero}:`, {
+        vista: lote.vista,
+        krpano: lote.krpano,
+        estado: lote.estado
+      });
+    });
+    
+    // 5. Verificar hotspots actuales
+    const hotspotCount = window.krpano?.get('hotspot.count') || 0;
+    console.log(`📍 Hotspots actuales: ${hotspotCount}`);
+    
+    return {
+      scene: currentScene,
+      vista: vista,
+      lotesVista4: lotesVista4?.length || 0,
+      hotspots: hotspotCount,
+      numeros: lotesVista4?.map(s => s.numero) || []
+    };
   };
 }
 

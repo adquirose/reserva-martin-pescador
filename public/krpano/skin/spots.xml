@@ -8,16 +8,16 @@
     <spot name="ficha5" estado="vendido" html="5" ath="-137.427" atv="22.095"/>
     <spot name="ficha6" estado="vendido" html="6" ath="-137.531" atv="14.409"/>
 
-    <spot name="ficha23" estado="vendido" html="J" ath="-14.599" atv="20.573"/>
-    <spot name="ficha24" estado="vendido" html="K" ath="-50.823" atv="26.752"/>
-    <spot name="ficha25" estado="vendido" html="L" ath="-106.888" atv="12.256"/>
+    <spot name="ficha_j" estado="vendido" html="J" ath="-14.599" atv="20.573"/>
+    <spot name="ficha_k" estado="vendido" html="K" ath="-50.823" atv="26.752"/>
+    <spot name="ficha_l" estado="vendido" html="L" ath="-106.888" atv="12.256"/>
 
 
     <!-- VISTA 2-->
 
 
-    <spot name="ficha26" estado="vendido" html="M1" ath="-129.902" atv="47.102"/>
-    <spot name="ficha27" estado="vendido" html="M2" ath="-163.899" atv="33.271"/>
+    <spot name="ficha_m1" estado="vendido" html="M1" ath="-129.902" atv="47.102"/>
+    <spot name="ficha_m2" estado="vendido" html="M2" ath="-163.899" atv="33.271"/>
 
     <spot name="ficha7" estado="vendido" html="7" ath="40.358" atv="72.961"/>
     <spot name="ficha8" estado="vendido" html="8" ath="85.018" atv="73.506"/>
@@ -29,8 +29,8 @@
         <!-- VISTA 3-->
 
 
-    <spot name="ficha28" estado="disponible" html="M3" ath="-13.371" atv="52.450"/>
-    <spot name="ficha29" estado="disponible" html="M4" ath="-75.930" atv="36.938"/>
+    <spot name="ficha_m3" estado="disponible" html="M3" ath="-13.371" atv="52.450"/>
+    <spot name="ficha_m4" estado="disponible" html="M4" ath="-75.930" atv="36.938"/>
 
     <spot name="ficha12" estado="disponible" html="12" ath="96.040" atv="67.228"/>
     <spot name="ficha13" estado="disponible" html="13" ath="143.409" atv="79.303"/>
@@ -41,8 +41,8 @@
             <!-- VISTA 4-->
 
 
-    <spot name="ficha30" estado="disponible" html="M5" ath="45.844" atv="34.744"/>
-    <spot name="ficha31" estado="disponible" html="M6" ath="-11.168" atv="52.328"/>
+    <spot name="ficha_m5" estado="disponible" html="M5" ath="45.844" atv="34.744"/>
+    <spot name="ficha_m6" estado="disponible" html="M6" ath="-11.168" atv="52.328"/>
 
     <spot name="ficha17" estado="disponible" html="17" ath="89.381" atv="32.071"/>
     <spot name="ficha18" estado="disponible" html="18" ath="90.637" atv="38.446"/>
@@ -50,6 +50,15 @@
     <spot name="ficha20" estado="disponible" html="20" ath="105.982" atv="53.599"/>
     <spot name="ficha21" estado="disponible" html="21" ath="126.431" atv="64.399"/>
     <spot name="ficha22" estado="disponible" html="22" ath="165.319" atv="71.868"/>
+    <spot name="ficha23" estado="disponible" html="23" ath="-136.373" atv="63.669"/>
+    <spot name="ficha24" estado="disponible" html="24" ath="-118.009" atv="50.658"/>
+    <spot name="ficha25" estado="disponible" html="25" ath="-107.679" atv="38.632"/>
+    <spot name="ficha26" estado="disponible" html="26" ath="-104.802" atv="29.997"/>
+    <spot name="ficha27" estado="disponible" html="27" ath="-103.665" atv="23.946"/>
+    <spot name="ficha28" estado="disponible" html="28" ath="-102.371" atv="19.187"/>
+    
+    <spot name="ficha_m7" estado="disponible" html="M7" ath="-70.993" atv="30.066"/>
+    <spot name="ficha_m8" estado="disponible" html="M8" ath="-85.432" atv="17.259"/>
 
 
 

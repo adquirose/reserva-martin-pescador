@@ -143,7 +143,7 @@ const FirestoreManager = () => {
 
       {/* Estadísticas */}
       <Grid container spacing={2} mb={3}>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" color="success.main">
@@ -155,7 +155,7 @@ const FirestoreManager = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" color="error.main">
@@ -167,7 +167,7 @@ const FirestoreManager = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card>
             <CardContent>
               <Typography variant="h6">
@@ -239,7 +239,7 @@ const FirestoreManager = () => {
       {/* Lista de spots */}
       <Grid container spacing={2}>
         {spots.map((spot) => (
-          <Grid item xs={12} sm={6} md={4} key={spot.id}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={spot.id}>
             <Card>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>

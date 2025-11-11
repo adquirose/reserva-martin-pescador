@@ -144,13 +144,13 @@ const FirebaseInitializer = () => {
               </Typography>
               
               <Grid container spacing={2}>
-                <Grid item xs={12} md={8}>
+                <Grid size={{ xs: 12, md: 8 }}>
                   <Typography variant="subtitle1">{projectConfig.title}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {projectConfig.description}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <Box sx={{ textAlign: 'right' }}>
                     <Typography variant="caption" display="block">
                       Última actualización: {projectConfig.fechaActualizacion?.toDate?.()?.toLocaleDateString() || 'N/A'}

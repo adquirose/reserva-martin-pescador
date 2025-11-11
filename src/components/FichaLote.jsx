@@ -13,11 +13,10 @@ import {
 } from '@mui/material';
 import {
   Close as CloseIcon,
-  LocationOn as LocationIcon,
   Home as HomeIcon,
-  AttachMoney as MoneyIcon,
   Info as InfoIcon
 } from '@mui/icons-material';
+import ImageCarousel from './ImageCarousel';
 
 const FichaLote = ({ lote, onClose, open }) => {
   if (!open || !lote) return null;
@@ -30,16 +29,6 @@ const FichaLote = ({ lote, onClose, open }) => {
       case 'reservado': return 'warning';
       default: return 'default';
     }
-  };
-
-  // Formatear precio
-  const formatearPrecio = (precio) => {
-    if (!precio || precio === null || precio === undefined) return 'Consultar precio';
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP',
-      minimumFractionDigits: 0
-    }).format(precio);
   };
 
   return (
@@ -79,7 +68,7 @@ const FichaLote = ({ lote, onClose, open }) => {
           color: 'white'
         }}>
           <Typography variant="h5" component="h2">
-            Lote {lote.html || lote.numero}
+            Lote {lote.numero}
           </Typography>
           <IconButton 
             onClick={onClose}
@@ -90,7 +79,14 @@ const FichaLote = ({ lote, onClose, open }) => {
           </IconButton>
         </Box>
 
-        <CardContent sx={{ p: 3 }}>
+        {/* Carousel de imágenes - solo si hay imágenes */}
+        {lote.imagenes && lote.imagenes.length > 0 && (
+          <ImageCarousel 
+            loteId={lote.id || lote.numero} 
+            images={lote.imagenes}
+            height={250} 
+          />
+        )}        <CardContent sx={{ p: 3 }}>
           {/* Estado */}
           <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
             <InfoIcon color="action" />
@@ -108,94 +104,21 @@ const FichaLote = ({ lote, onClose, open }) => {
 
           {/* Información básica */}
           <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+            {/* Superficie */}
+            <Grid size={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <HomeIcon color="action" fontSize="small" />
                 <Typography variant="body2" color="text.secondary">
-                  Número:
+                  Superficie:
+                </Typography>
+                <Typography variant="body1" fontWeight="medium">
+                  {lote.superficie ? `${lote.superficie} m²` : 
+                   lote.superficieLote ? `${lote.superficieLote} m²` : 
+                   'No especificada'}
                 </Typography>
               </Box>
-              <Typography variant="body1" fontWeight="medium">
-                {lote.numero}
-              </Typography>
             </Grid>
-
-            <Grid item xs={6}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <LocationIcon color="action" fontSize="small" />
-                <Typography variant="body2" color="text.secondary">
-                  Etapa:
-                </Typography>
-              </Box>
-              <Typography variant="body1" fontWeight="medium">
-                {lote.etapa || 'No especificada'}
-              </Typography>
-            </Grid>
-
-            {/* Precio */}
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <MoneyIcon color="action" fontSize="small" />
-                <Typography variant="body2" color="text.secondary">
-                  Precio:
-                </Typography>
-              </Box>
-              <Typography 
-                variant="h6" 
-                fontWeight="bold"
-                color={lote.estado === 'disponible' ? 'primary.main' : 'text.secondary'}
-              >
-                {formatearPrecio(lote.precio)}
-              </Typography>
-            </Grid>
-
-            {/* Superficies */}
-            {lote.superficieLote && (
-              <Grid item xs={6}>
-                <Typography variant="body2" color="text.secondary">
-                  Superficie Lote:
-                </Typography>
-                <Typography variant="body1">
-                  {lote.superficieLote} m²
-                </Typography>
-              </Grid>
-            )}
-
-            {lote.superficieTotal && (
-              <Grid item xs={6}>
-                <Typography variant="body2" color="text.secondary">
-                  Superficie Total:
-                </Typography>
-                <Typography variant="body1">
-                  {lote.superficieTotal} m²
-                </Typography>
-              </Grid>
-            )}
-
-            {lote.superficieTransito && (
-              <Grid item xs={12}>
-                <Typography variant="body2" color="text.secondary">
-                  Superficie Tránsito:
-                </Typography>
-                <Typography variant="body1">
-                  {lote.superficieTransito} m²
-                </Typography>
-              </Grid>
-            )}
           </Grid>
-
-          {/* Información adicional */}
-          {lote.descripcion && (
-            <>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Descripción:
-              </Typography>
-              <Typography variant="body1">
-                {lote.descripcion}
-              </Typography>
-            </>
-          )}
         </CardContent>
 
         {/* Acciones */}

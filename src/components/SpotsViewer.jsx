@@ -236,7 +236,7 @@ const SpotsViewer = () => {
       <Box sx={{ mb: 3 }}>
         <Grid container spacing={2} alignItems="center">
           {/* Filtros */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
               <FilterIcon />
               
@@ -272,7 +272,7 @@ const SpotsViewer = () => {
           </Grid>
 
           {/* Estadísticas */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <Chip label={`Total: ${stats.total}`} variant="outlined" size="small" />
               <Chip label={`Disponibles: ${stats.disponibles}`} color="success" variant="outlined" size="small" />
@@ -293,7 +293,7 @@ const SpotsViewer = () => {
       ) : (
         <Grid container spacing={2}>
           {filteredSpots.map((spot) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={spot.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={spot.id}>
               <SpotCard spot={spot} />
             </Grid>
           ))}

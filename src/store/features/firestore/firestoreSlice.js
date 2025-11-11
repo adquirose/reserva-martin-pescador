@@ -25,13 +25,37 @@ const getProjectConfig = async () => {
 
 // ===== THUNKS ASÍNCRONOS =====
 
+// Función para serializar datos de Firebase
+const serializeFirebaseData = (data) => {
+  if (Array.isArray(data)) {
+    return data.map(serializeFirebaseData);
+  }
+  
+  if (data && typeof data === 'object') {
+    const serialized = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (value && typeof value.toDate === 'function') {
+        // Convertir Timestamp a string ISO
+        serialized[key] = value.toDate().toISOString();
+      } else if (value && typeof value === 'object') {
+        serialized[key] = serializeFirebaseData(value);
+      } else {
+        serialized[key] = value;
+      }
+    }
+    return serialized;
+  }
+  
+  return data;
+};
+
 // Obtener todos los spots
 export const fetchAllSpots = createAsyncThunk(
   'firestore/fetchAllSpots',
   async (_, { rejectWithValue }) => {
     try {
       const spots = await getAllSpots();
-      return spots;
+      return serializeFirebaseData(spots);
     } catch (error) {
       return rejectWithValue(error.message);
     }

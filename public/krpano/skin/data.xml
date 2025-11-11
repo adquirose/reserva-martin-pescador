@@ -104,7 +104,7 @@
 	</p>
 	</data>
 
-	<data name="ficha23">
+	<data name="ficha_j">
 
 	<h2>Parcela J</h2>
 	<p>
@@ -121,7 +121,7 @@
 	</p>
 	</data>
 
-	<data name="ficha24">
+	<data name="ficha_k">
 
 	<h2>Parcela K</h2>
 	<p>
@@ -138,7 +138,7 @@
 	</p>
 	</data>
 
-	<data name="ficha25">
+	<data name="ficha_l">
 
 	<h2>Parcela L</h2>
 	<p>
@@ -240,7 +240,7 @@
 	</p>
 	</data>
 
-	<data name="ficha26">
+	<data name="ficha_m1">
 
 	<h2>Parcela M1</h2>
 	<p>
@@ -257,7 +257,7 @@
 	</p>
 	</data>
 
-	<data name="ficha27">
+	<data name="ficha_m2">
 
 	<h2>Parcela M2</h2>
 	<p>
@@ -274,7 +274,7 @@
 	</p>
 	</data>
 
-	<data name="ficha28">
+	<data name="ficha_m3">
 
 	<h2>Parcela M3</h2>
 	<p>
@@ -291,7 +291,7 @@
 	</p>
 	</data>
 
-	<data name="ficha29">
+	<data name="ficha_m4">
 
 	<h2>Parcela M4</h2>
 	<p>
@@ -481,8 +481,111 @@
 	</p>
 	</data>
 
+	<data name="ficha23">
+
+	<h2>Parcela 23</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+		<data name="ficha24">
+
+	<h2>Parcela 24</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+	<data name="ficha25">
+
+	<h2>Parcela 25</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+		<data name="ficha26">
+
+	<h2>Parcela 26</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+	<data name="ficha27">
+
+	<h2>Parcela 27</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+	<data name="ficha28">
+
+	<h2>Parcela 28</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5000 m2
+	<br/>
+	<br/>
+	Metros orilla lago:  mts.
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+
 	
-	<data name="ficha30">
+	<data name="ficha_m5">
 
 	<h2>Parcela M5</h2>
 	<p>
@@ -499,7 +602,7 @@
 	</p>
 	</data>
 
-	<data name="ficha31">
+	<data name="ficha_m6">
 
 	<h2>Parcela M6</h2>
 	<p>
@@ -516,6 +619,39 @@
 	</p>
 	</data>
 
+	<data name="ficha_m7">
+
+	<h2>Parcela M7</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5.07 ha.
+	<br/>
+	<br/>
+	Metros orilla lago: 0
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
+
+	<data name="ficha_m8">
+
+	<h2>Parcela M8</h2>
+	<p>
+	Estado: Disponible
+	<br/>
+	<br/>
+	Superficie aprox.: 5.07 ha.
+	<br/>
+	<br/>
+	Metros orilla lago: 0
+	<br/>
+	<br/>
+	Precio: Consultar precio a reservamartinpescador@gmail.com
+	</p>
+	</data>
 
 
 	

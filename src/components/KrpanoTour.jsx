@@ -200,6 +200,17 @@ const KrpanoTour = () => {
                   // Configurar eventos para sincronizar con el mapa
                   setupKrpanoEvents(krpano);
                   
+                  // ⭐ NUEVO: Inicializar sistema simple de spots
+                  setTimeout(async () => {
+                    try {
+                      const { inicializarSpotsSimple } = await import('../services/simpleSpotsLoader.js');
+                      const resultado = await inicializarSpotsSimple();
+                      console.log('🎯 Sistema simple de spots inicializado:', resultado);
+                    } catch (error) {
+                      console.error('❌ Error inicializando spots simples:', error);
+                    }
+                  }, 1000); // Delay para asegurar que krpano esté completamente listo
+                  
                   // Emitir evento personalizado con verificación completa
                   const scene = krpano.get('xml.scene');
                   const version = krpano.get('version');

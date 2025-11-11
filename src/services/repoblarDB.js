@@ -330,6 +330,19 @@ const lotesCompletos = {
     superficieLote: null,
     superficieTransito: null
   },
+  "18": {
+    numero: "18",
+    estado: "disponible",
+    html: "18",
+    etapa: 4,
+    krpano: {
+      vista4: { ath: 90.637, atv: 38.446 }
+    },
+    precio: null,
+    superficieTotal: null,
+    superficieLote: null,
+    superficieTransito: null
+  },
   "19": {
     numero: "19",
     estado: "disponible",

@@ -1,6 +1,8 @@
 // Configuración de Firebase para Reserva Martin Pescador
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 // Configuración de Firebase usando variables de entorno
 // Las variables se definen en el archivo .env
@@ -16,8 +18,10 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 
-// Inicializar Firestore
+// Inicializar servicios de Firebase
 export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 // Ruta de la colección para este proyecto
 export const PROJECT_PATH = 'proyectos/martin-pescador';
