@@ -254,7 +254,7 @@ const AdminDashboard = () => {
                 <TableCell sx={{ fontWeight: 'bold', minWidth: { xs: 100, sm: 120 } }}>Estado</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', minWidth: { xs: 80, sm: 100 } }}>📸 Imágenes</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', minWidth: { xs: 60, sm: 80 } }}>Etapa</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', minWidth: { xs: 100, sm: 120 } }}>Precio</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 'bold', minWidth: { xs: 100, sm: 120 } }}>Precio (UF)</TableCell>
                 <TableCell 
                   align="right" 
                   sx={{ 
@@ -405,12 +405,13 @@ const AdminDashboard = () => {
                         size="small"
                         type="number"
                         fullWidth
+                        label="Precio en UF"
                         InputProps={{
-                          startAdornment: <InputAdornment position="start">$</InputAdornment>
+                          startAdornment: <InputAdornment position="start">UF</InputAdornment>
                         }}
                       />
                     ) : (
-                      lote.precio ? `$${lote.precio.toLocaleString()}` : 'N/A'
+                      lote.precio ? `UF ${typeof lote.precio === 'number' ? lote.precio.toLocaleString('es-CL') : lote.precio}` : 'N/A'
                     )}
                   </TableCell>
 

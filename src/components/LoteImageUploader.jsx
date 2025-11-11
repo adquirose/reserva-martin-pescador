@@ -190,7 +190,7 @@ const LoteImageUploader = ({ loteId, currentImages = [], onImagesUpdated }) => {
               📸 Imágenes del Lote {loteId}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Acepta imágenes hasta 5MB - Se optimizan automáticamente a máximo 200KB
+              Acepta imágenes hasta 12MB - Se optimizan automáticamente
             </Typography>
           </Box>
 

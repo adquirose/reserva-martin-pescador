@@ -127,10 +127,10 @@ export const optimizeImage = async (file) => {
       throw new Error('El archivo debe ser una imagen');
     }
     
-    // Validar tamaño máximo inicial (15MB)
-    const maxSizeBytes = 15 * 1024 * 1024; // 15MB
+    // Validar tamaño máximo inicial (12MB)
+    const maxSizeBytes = 12 * 1024 * 1024; // 12MB
     if (file.size > maxSizeBytes) {
-      throw new Error('La imagen es demasiado grande (máximo 15MB)');
+      throw new Error('La imagen es demasiado grande (máximo 12MB)');
     }
     
     // Si la imagen ya es pequeña (menos de 200KB), verificar calidad

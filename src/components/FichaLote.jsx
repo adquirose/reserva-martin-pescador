@@ -14,7 +14,8 @@ import {
 import {
   Close as CloseIcon,
   Home as HomeIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
+  RequestQuote as PriceIcon
 } from '@mui/icons-material';
 import ImageCarousel from './ImageCarousel';
 
@@ -89,7 +90,7 @@ const FichaLote = ({ lote, onClose, open }) => {
         )}        <CardContent sx={{ p: 3 }}>
           {/* Estado */}
           <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <InfoIcon color="action" />
+            <InfoIcon color="action" fontSize="medium" />
             <Typography variant="body2" color="text.secondary">
               Estado:
             </Typography>
@@ -104,10 +105,25 @@ const FichaLote = ({ lote, onClose, open }) => {
 
           {/* Información básica */}
           <Grid container spacing={2}>
+            {/* Precio */}
+            {lote.precio && (
+              <Grid size={12}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  <PriceIcon color="primary" fontSize="medium" />
+                  <Typography variant="body2" color="text.secondary">
+                    Precio:
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold" color="primary">
+                    UF {typeof lote.precio === 'number' ? lote.precio.toLocaleString('es-CL') : lote.precio}
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+            
             {/* Superficie */}
             <Grid size={12}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <HomeIcon color="action" fontSize="small" />
+                <HomeIcon color="action" fontSize="medium" />
                 <Typography variant="body2" color="text.secondary">
                   Superficie:
                 </Typography>

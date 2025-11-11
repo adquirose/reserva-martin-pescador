@@ -22,8 +22,7 @@ import {
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
-  Save as SaveIcon,
-  AttachMoney as MoneyIcon
+  Save as SaveIcon
 } from '@mui/icons-material';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db, PROJECT_PATH, LOTES_COLLECTION } from '../config/firebase';
@@ -262,14 +261,14 @@ const LoteEditor = () => {
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   fullWidth
-                  label="Precio"
+                  label="Precio (UF)"
                   name="precio"
                   type="number"
                   value={formData.precio}
                   onChange={handleInputChange}
                   disabled={loading}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start"><MoneyIcon /></InputAdornment>,
+                    startAdornment: <InputAdornment position="start">UF</InputAdornment>,
                   }}
                   helperText="Opcional - Dejar vacío si no está definido"
                 />

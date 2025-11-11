@@ -64,7 +64,7 @@ const TestReduxFirebase = () => {
                 <strong>Superficie:</strong> {spot.superficie}m²
               </Typography>
               <Typography variant="body2">
-                <strong>Precio:</strong> ${spot.precio}
+                <strong>Precio:</strong> UF {typeof spot.precio === 'number' ? spot.precio.toLocaleString('es-CL') : spot.precio}
               </Typography>
               <Typography variant="body2">
                 <strong>Estado:</strong> {spot.estado}
