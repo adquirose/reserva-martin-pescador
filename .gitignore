@@ -26,8 +26,27 @@ dist-ssr
 # Krpano heavy image files (served from external server)
 public/krpano/panos/
 
+# Environment Variables (CRITICAL - Never commit)
+.env
+.env.local
+.env.development
+.env.production
+.env.development.local
+.env.production.local
+.env.test
+.env.test.local
+
 # Firebase configuration files (sensitive)
 .firebaserc
 firebase.json
 firestore.rules
 firestore.indexes.json
+
+# API Keys and secrets
+config/keys.js
+config/secrets.js
+src/config/apiKeys.js
+
+# Build environment files
+.vercel
+.netlify
