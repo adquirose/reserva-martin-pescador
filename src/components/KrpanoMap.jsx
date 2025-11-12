@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Fab } from '@mui/material';
+import { Fab, Tooltip } from '@mui/material';
 import { Dashboard as MiniMapIcon, DashboardCustomize as MiniMapMinIcon, Close as CloseIcon } from '@mui/icons-material';
 
 const KrpanoMap = () => {
@@ -75,26 +75,40 @@ const KrpanoMap = () => {
   const { icon, backgroundColor, label } = getMapIconAndColor();
 
   return (
-    <Fab
-      color="secondary"
-      aria-label={label}
-      title={label}
-      onClick={toggleMap}
-      sx={{
-        backgroundColor: backgroundColor,
-        '&:hover': {
-          backgroundColor: backgroundColor.replace('0.9', '1'),
-          transform: 'scale(1.1)',
-        },
-        transition: 'all 0.3s ease-in-out',
-        boxShadow: 3,
-        width: { xs: 40, sm: 48 },
-        height: { xs: 40, sm: 48 },
-        border: '2px solid white',
+    <Tooltip 
+      title={`${label} del masterplan`} 
+      placement="right" 
+      arrow
+      componentsProps={{
+        tooltip: {
+          sx: {
+            fontSize: '1rem',
+            fontWeight: 500,
+            padding: '8px 12px',
+          }
+        }
       }}
     >
-      {icon}
-    </Fab>
+      <Fab
+        color="secondary"
+        aria-label={label}
+        onClick={toggleMap}
+        sx={{
+          backgroundColor: backgroundColor,
+          '&:hover': {
+            backgroundColor: backgroundColor.replace('0.9', '1'),
+            transform: 'scale(1.1)',
+          },
+          transition: 'all 0.3s ease-in-out',
+          boxShadow: 3,
+          width: { xs: 40, sm: 48 },
+          height: { xs: 40, sm: 48 },
+          border: '2px solid white',
+        }}
+      >
+        {icon}
+      </Fab>
+    </Tooltip>
   );
 };
 

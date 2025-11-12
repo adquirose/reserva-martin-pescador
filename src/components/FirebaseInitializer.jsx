@@ -53,7 +53,6 @@ const FirebaseInitializer = () => {
         dispatch(fetchProjectConfig());
       }
     } catch (err) {
-      console.error('Error durante inicialización:', err);
       setInitResult({ error: err });
     }
   };

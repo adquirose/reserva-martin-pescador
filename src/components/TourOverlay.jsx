@@ -3,6 +3,7 @@ import Logo from './Logo';
 import ContactMenu from './ContactMenu';
 import KrpanoMap from './KrpanoMap';
 import MapboxMap from './MapboxMap';
+import KrpanoPdfDownload from './KrpanoPdfDownload';
 
 const TourOverlay = () => {
   return (
@@ -46,6 +47,9 @@ const TourOverlay = () => {
       }}>
         {/* Ícono de información */}
         <ContactMenu />
+        
+        {/* Botón de descarga PDF */}
+        <KrpanoPdfDownload />
         
         {/* Mapa externo Mapbox */}
         <MapboxMap />

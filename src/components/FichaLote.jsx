@@ -146,7 +146,6 @@ const FichaLote = ({ lote, onClose, open }) => {
               fullWidth
               onClick={() => {
                 // Aquí se podría implementar lógica de contacto/reserva
-                console.log('Consultar lote:', lote.numero);
               }}
             >
               Consultar Disponibilidad
@@ -159,7 +158,7 @@ const FichaLote = ({ lote, onClose, open }) => {
               color="warning" 
               fullWidth
               onClick={() => {
-                console.log('Consultar reserva:', lote.numero);
+                // Acción de consulta
               }}
             >
               Consultar Reserva

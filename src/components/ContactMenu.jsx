@@ -10,7 +10,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Link
+  Link,
+  Tooltip
 } from '@mui/material';
 import {
   Info as InfoIcon,
@@ -73,35 +74,49 @@ const ContactMenu = () => {
 
   return (
     <>
-      <Fab
-        aria-label="información de contacto"
-        onClick={handleClick}
-        title="Información y contacto"
-        sx={{
-          width: { xs: 40, sm: 48 },
-          height: { xs: 40, sm: 48 },
-          backgroundColor: 'rgba(33, 150, 243, 0.9)', // Azul vibrante
-          border: '2px solid white',
-          color: 'white',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          '&:hover': {
-            backgroundColor: 'rgba(33, 150, 243, 1)',
-            transform: 'scale(1.05)',
-            boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-          },
-          '&:focus': {
-            outline: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          },
-          '&:focus-visible': {
-            outline: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          },
-          transition: 'all 0.2s ease',
+      <Tooltip 
+        title="Información de contacto y ubicación" 
+        placement="right" 
+        arrow
+        componentsProps={{
+          tooltip: {
+            sx: {
+              fontSize: '1rem',
+              fontWeight: 500,
+              padding: '8px 12px',
+            }
+          }
         }}
       >
-        <InfoIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
-      </Fab>
+        <Fab
+          aria-label="información de contacto"
+          onClick={handleClick}
+          sx={{
+            width: { xs: 40, sm: 48 },
+            height: { xs: 40, sm: 48 },
+            backgroundColor: 'rgba(33, 150, 243, 0.9)', // Azul vibrante
+            border: '2px solid white',
+            color: 'white',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            '&:hover': {
+              backgroundColor: 'rgba(33, 150, 243, 1)',
+              transform: 'scale(1.05)',
+              boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
+            },
+            '&:focus': {
+              outline: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            },
+            '&:focus-visible': {
+              outline: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            },
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <InfoIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
+        </Fab>
+      </Tooltip>
 
       <Modal
         open={open}

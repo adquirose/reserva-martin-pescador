@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Fab, Modal, Box } from '@mui/material';
+import { Fab, Modal, Box, Tooltip } from '@mui/material';
 import { Map as MapIcon, Close as CloseIcon } from '@mui/icons-material';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -13,15 +13,10 @@ const MapboxMap = () => {
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWRxdWlyb3NlIiwiYSI6ImNtZXZ0cHllMDBtdjAybW91b254bm9kMjIifQ.1fMjTWUhZj_1gJ9_WanBhQ';
 
   useEffect(() => {
-    console.log('📋 useEffect ejecutándose - mapOpen:', mapOpen, 'mapContainer.current:', !!mapContainer.current, 'map.current:', !!map.current);
-    
     if (mapOpen && !map.current) {
-      console.log('✅ Modal abierto - Esperando contenedor...');
-      
       // Función para intentar inicializar el mapa
       const tryInitializeMap = () => {
         if (mapContainer.current) {
-          console.log('🗺️ Contenedor disponible - Inicializando mapa Mapbox...');
           try {
             map.current = new mapboxgl.Map({
               container: mapContainer.current,
@@ -45,12 +40,10 @@ const MapboxMap = () => {
             map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
             map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
 
-            console.log('✅ Mapa Mapbox inicializado correctamente');
-          } catch (error) {
-            console.error('❌ Error al inicializar Mapbox:', error);
+          } catch {
+            // Error silenciado en producción
           }
         } else {
-          console.log('⏳ Contenedor no disponible, reintentando en 50ms...');
           setTimeout(tryInitializeMap, 50);
         }
       };
@@ -61,13 +54,11 @@ const MapboxMap = () => {
   }, [mapOpen]);
 
   const openMap = () => {
-    console.log('🔘 Click en botón Mapbox - Abriendo modal...');
     setMapOpen(true);
   };
 
   const closeMap = () => {
     if (map.current) {
-      console.log('🧹 Limpiando mapa Mapbox...');
       map.current.remove();
       map.current = null;
     }
@@ -77,34 +68,48 @@ const MapboxMap = () => {
   return (
     <>
       {/* Botón para abrir Mapbox */}
-      <Fab
-        onClick={openMap}
-        title="Ver mapa interactivo"
-        sx={{
-          width: { xs: 40, sm: 48 },
-          height: { xs: 40, sm: 48 },
-          backgroundColor: 'rgba(255, 87, 34, 0.9)', // Naranja vibrante
-          border: '2px solid white',
-          color: 'white',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          '&:hover': {
-            backgroundColor: 'rgba(255, 87, 34, 1)',
-            transform: 'scale(1.05)',
-            boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-          },
-          '&:focus': {
-            outline: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          },
-          '&:focus-visible': {
-            outline: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          },
-          transition: 'all 0.2s ease',
+      <Tooltip 
+        title="Ver ubicación en mapa interactivo" 
+        placement="right" 
+        arrow
+        componentsProps={{
+          tooltip: {
+            sx: {
+              fontSize: '1rem',
+              fontWeight: 500,
+              padding: '8px 12px',
+            }
+          }
         }}
       >
-        <MapIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
-      </Fab>
+        <Fab
+          onClick={openMap}
+          sx={{
+            width: { xs: 40, sm: 48 },
+            height: { xs: 40, sm: 48 },
+            backgroundColor: 'rgba(255, 87, 34, 0.9)', // Naranja vibrante
+            border: '2px solid white',
+            color: 'white',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 87, 34, 1)',
+              transform: 'scale(1.05)',
+              boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
+            },
+            '&:focus': {
+              outline: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            },
+            '&:focus-visible': {
+              outline: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            },
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <MapIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
+        </Fab>
+      </Tooltip>
 
       {/* Modal con mapa Mapbox */}
       <Modal
@@ -154,11 +159,9 @@ const MapboxMap = () => {
           <div
             ref={(el) => {
               mapContainer.current = el;
-              console.log('📦 Contenedor del mapa asignado:', !!el);
               
               // Si el contenedor se asigna y no hay mapa inicializado, inicializarlo
               if (el && !map.current && mapOpen) {
-                console.log('🚀 Inicializando mapa directamente desde ref callback...');
                 setTimeout(() => {
                   try {
                     map.current = new mapboxgl.Map({
@@ -183,9 +186,8 @@ const MapboxMap = () => {
                     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
                     map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
 
-                    console.log('✅ Mapa Mapbox inicializado desde callback');
-                  } catch (error) {
-                    console.error('❌ Error al inicializar Mapbox desde callback:', error);
+                  } catch {
+                    // Error silenciado en producción
                   }
                 }, 50);
               }

@@ -85,8 +85,8 @@ const FirestoreManager = () => {
       // Después de inicializar, cargar los datos
       dispatch(fetchAllSpots());
       setShowInitialize(false);
-    } catch (error) {
-      console.error('Error al inicializar:', error);
+    } catch {
+      // Error silenciado en producción
     }
   };
 

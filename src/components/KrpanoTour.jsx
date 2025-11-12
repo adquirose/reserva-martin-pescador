@@ -28,10 +28,8 @@ const KrpanoTour = () => {
       const layerCount = krpano.get('layer.count');
       if (layerCount === null || layerCount === undefined) return false;
 
-      console.log('Krpano API completamente verificada:', { version, hlookat, layerCount });
       return true;
-    } catch (error) {
-      console.warn('Error verificando Krpano API:', error);
+    } catch {
       return false;
     }
   };
@@ -39,7 +37,6 @@ const KrpanoTour = () => {
   // Función para configurar los eventos de Krpano que se comunicarán con el mapa
   const setupKrpanoEvents = (krpano) => {
     if (!verifyKrpanoReadiness(krpano)) {
-      console.warn('Krpano no está completamente listo, reintentando en 500ms...');
       setTimeout(() => setupKrpanoEvents(krpano), 500);
       return;
     }
