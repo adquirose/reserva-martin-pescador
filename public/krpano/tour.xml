@@ -132,8 +132,7 @@
 
 		 <scene name="scene_e4" title="Vista Etapa 4" onstart="mostrar_btn_vistageneral(false);activatespot(spot-e4,87.198);delayedcall(0.5, js(generar_spots(17,17))); delayedcall(0.7, js(generar_spots(19,22))); delayedcall(0.9, js(generar_spots(30,31)));" thumburl="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e4.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="87.198" vlookat="20.287" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"
- />
+		<view hlookat="272.362" vlookat="25.597" fovtype="MFOV" fov="100.200" maxpixelzoom="2.0" fovmin="70" fovmax="130" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-33" vlookatmax="90"/>
 
 		<preview url="https://lanube360.com/temporales/reserva-martin-pescador2/panos/e4.tiles/preview.jpg" />
 
