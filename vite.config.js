@@ -4,6 +4,19 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    // Configuraciones para producción
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        // Eliminar todos los console.* en producción
+        drop_console: true,
+        drop_debugger: true,
+        // Eliminar logs específicos
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
+      }
+    }
+  },
   server: {
     port: 5173,
     strictPort: true, // No permitir otros puertos

@@ -124,8 +124,7 @@
 
 	<!-- Acción de prueba para debugging -->
 	<action name="test_spots">
-		trace('🔧 Testing spots system...');
-		js(console.log('Krpano tour cargado, probando sistema de spots'));
+		<!-- Logs disabled for production -->
 	</action>
 
 
