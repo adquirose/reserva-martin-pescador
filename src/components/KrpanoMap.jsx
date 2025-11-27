@@ -13,6 +13,8 @@ const KrpanoMap = () => {
 
 
   const toggleMap = () => {
+    let newState;
+    
     if (mapState === 'hidden') {
       // Paso 1: Invisible → Minimizado (directamente)
       const krpanoInstance = getKrpanoInstance();
@@ -20,7 +22,7 @@ const KrpanoMap = () => {
         krpanoInstance.call('mostrar_mapa_minimizado()'); // Mostrar directamente minimizado
       }
       
-      setMapState('minimized');
+      newState = 'minimized';
     } else if (mapState === 'minimized') {
       // Paso 2: Minimizado → Maximizado
       const krpanoInstance = getKrpanoInstance();
@@ -28,7 +30,7 @@ const KrpanoMap = () => {
         krpanoInstance.call('max_planta()'); // Maximizar
       }
       
-      setMapState('visible');
+      newState = 'visible';
     } else {
       // Paso 3: Maximizado → Invisible (ocultar completamente)
       const krpanoInstance = getKrpanoInstance();
@@ -36,8 +38,15 @@ const KrpanoMap = () => {
         krpanoInstance.set('layer[mapcontainer].visible', false);
       }
       
-      setMapState('hidden');
+      newState = 'hidden';
     }
+    
+    setMapState(newState);
+    
+    // Emitir evento para que otros componentes puedan reaccionar
+    window.dispatchEvent(new CustomEvent('krpano-map-state-change', {
+      detail: { state: newState }
+    }));
   };
 
   // Determinar el icono y color según el estado

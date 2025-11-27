@@ -23,7 +23,7 @@ import {
   Explore as ExploreIcon,
   LocationOn as LocationOnIcon
 } from '@mui/icons-material';
-import grupoMartinPescadorLogo from '../assets/grupo-martinpescador.png';
+import grupoMartinPescadorLogo from '../assets/logo-final.png';
 
 const ContactMenu = () => {
   const [open, setOpen] = useState(false);
@@ -390,34 +390,18 @@ const ContactMenu = () => {
             pt: 2, 
             textAlign: 'center' 
           }}>
-            <Typography
-              variant="body2"
-              sx={{
-                color: 'text.secondary',
-                fontWeight: 'medium',
-                mb: 1.5
-              }}
-            >
-              Un proyecto de
-            </Typography>
-            
             <Box sx={{ 
               display: 'flex', 
               justifyContent: 'center',
-              p: 1,
-              backgroundColor: 'rgba(25, 118, 210, 0.05)',
-              borderRadius: '8px'
+              p: 1
             }}>
               <Box
                 component="img"
                 src={grupoMartinPescadorLogo}
                 alt="Grupo Martín Pescador"
                 sx={{
-                  maxHeight: '50px',
+                  maxHeight: '90px',
                   width: 'auto',
-                  backgroundColor: '#1976d2',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
                   filter: 'brightness(1.1)',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                 }}

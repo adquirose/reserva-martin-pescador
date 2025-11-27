@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import TourOverlay from '../TourOverlay'
 import FichaLote from '../FichaLote'
 import LoadingScreen from '../LoadingScreen'
@@ -11,6 +11,7 @@ import {
   selectFichaAbierta, 
   selectLoteSeleccionado 
 } from '../../store/features/ficha/fichaSlice'
+import grupoMartinPescadorLogo from '../../assets/grupo-martinpescador.png'
 
 export const Krpano = () => {
     const krpanoContainerRef = useRef(null)
@@ -18,6 +19,7 @@ export const Krpano = () => {
     const scriptLoadedRef = useRef(false)
     const [isLoading, setIsLoading] = useState(true)
     const [loadingMessage, setLoadingMessage] = useState('Iniciando tour virtual...')
+    const [hideProjectLogo, setHideProjectLogo] = useState(false)
     
     // Redux state y dispatch
     const dispatch = useDispatch()
@@ -65,6 +67,18 @@ export const Krpano = () => {
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
     }, [fichaAbierta, dispatch])
+
+    // Escuchar cambios en el estado del mapa para ocultar/mostrar el logo
+    useEffect(() => {
+        const handleMapStateChange = (event) => {
+            const { state } = event.detail;
+            // Ocultar logo cuando el mapa está visible (maximizado) o minimizado
+            setHideProjectLogo(state === 'visible' || state === 'minimized');
+        };
+
+        window.addEventListener('krpano-map-state-change', handleMapStateChange);
+        return () => window.removeEventListener('krpano-map-state-change', handleMapStateChange);
+    }, [])
 
     // Montar krpano al cargar el componente - EXACTO como en fundo-refugia
     useEffect(() => {
@@ -188,6 +202,52 @@ export const Krpano = () => {
             
             {/* Overlay de controles encima del tour */}
             <TourOverlay />
+            
+            {/* Footer con logo del proyecto */}
+            {!isLoading && !hideProjectLogo && (
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: { xs: 10, sm: 20 },
+                        right: { xs: 10, sm: 20 },
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: { xs: 1, sm: 2 },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        backdropFilter: 'blur(8px)',
+                        padding: { xs: '8px 12px', sm: '12px 20px' },
+                        borderRadius: { xs: '16px', sm: '25px' },
+                        zIndex: 500, // Menor que el mapa de Krpano
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                        transition: 'all 0.3s ease',
+                        opacity: hideProjectLogo ? 0 : 1,
+                        transform: hideProjectLogo ? 'scale(0.8)' : 'scale(1)'
+                    }}
+                >
+                    <Typography 
+                        variant="body2" 
+                        sx={{ 
+                            color: '#ffffff', 
+                            fontSize: { xs: '12px', sm: '14px' },
+                            fontWeight: 500,
+                            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
+                            display: { xs: 'none', sm: 'block' } // Ocultar texto en móvil
+                        }}
+                    >
+                        Un proyecto de
+                    </Typography>
+                    <img 
+                        src={grupoMartinPescadorLogo} 
+                        alt="Grupo Martín Pescador"
+                        style={{
+                            height: 'clamp(24px, 4vw, 36px)', // Responsive: 24px en móvil, hasta 36px en desktop
+                            width: 'auto',
+                            filter: 'brightness(1.2) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8))'
+                        }}
+                    />
+                </Box>
+            )}
             
             {/* Ficha de lote */}
             <FichaLote 

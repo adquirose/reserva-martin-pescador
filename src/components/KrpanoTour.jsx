@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
+import grupoMartinPescadorLogo from '../assets/grupo-martinpescador.png';
 
 const KrpanoTour = () => {
   const krpanoRef = useRef(null);
@@ -375,6 +376,49 @@ const KrpanoTour = () => {
           <Typography variant="body2" sx={{ opacity: 0.6 }}>
             Por favor, recarga la página e intenta de nuevo
           </Typography>
+        </Box>
+      )}
+
+      {/* Footer con logo del proyecto */}
+      {!loading && !error && (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(8px)',
+            padding: '12px 20px',
+            borderRadius: '25px',
+            zIndex: 9999,
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+          }}
+        >
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: '#ffffff', 
+              fontSize: '14px',
+              fontWeight: 500,
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)'
+            }}
+          >
+            Un proyecto de
+          </Typography>
+          <img 
+            src={grupoMartinPescadorLogo} 
+            alt="Grupo Martín Pescador"
+            style={{
+              height: '36px',
+              width: 'auto',
+              filter: 'brightness(1.2) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8))'
+            }}
+          />
         </Box>
       )}
 
