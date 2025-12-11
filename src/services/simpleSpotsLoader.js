@@ -7,12 +7,40 @@ let lotesCompletos = [];
 
 /**
  * Cargar spots desde Firestore y pintarlos directamente en krpano
+ * CON VERIFICACIÓN DE ESCENA para evitar bugs en producción
  */
 export const cargarYPintarSpots = async () => {
   try {
     console.log('🎯 Cargando spots desde Firestore...');
     
-    // 1. Cargar todos los lotes desde Firestore
+    // 1. VERIFICAR que krpano esté listo y la escena inicializada
+    const krpano = window.krpano;
+    if (!krpano) {
+      console.error('❌ Krpano no disponible');
+      return { success: false, message: 'Krpano no disponible' };
+    }
+    
+    // 2. Esperar a que la escena esté completamente cargada
+    let intentos = 0;
+    let escenaActual = null;
+    while (intentos < 10) {
+      escenaActual = krpano.get('xml.scene');
+      if (escenaActual && escenaActual !== 'null' && escenaActual !== '') {
+        break;
+      }
+      console.log(`⏳ Esperando escena... intento ${intentos + 1}`);
+      await new Promise(resolve => setTimeout(resolve, 200));
+      intentos++;
+    }
+    
+    if (!escenaActual || escenaActual === 'null') {
+      console.error('❌ No se pudo obtener la escena actual después de 2 segundos');
+      return { success: false, message: 'Escena no disponible' };
+    }
+    
+    console.log(`🎬 Escena confirmada: ${escenaActual}`);
+    
+    // 3. Cargar todos los lotes desde Firestore
     const lotesCollection = collection(db, PROJECT_PATH, LOTES_COLLECTION);
     const snapshot = await getDocs(lotesCollection);
     
@@ -32,18 +60,8 @@ export const cargarYPintarSpots = async () => {
     
     console.log(`📊 Lotes cargados desde Firestore: ${lotes.length}`);
     
-    // 2. Obtener vista actual de krpano
-    const krpano = window.krpano;
-    if (!krpano) {
-      console.warn('⚠️ krpano no está disponible');
-      return { success: false, message: 'krpano no disponible' };
-    }
-    
-    const currentScene = krpano.get('xml.scene');
-    console.log(`🎬 Escena actual: ${currentScene}`);
-    
-    // 3. Determinar vista actual
-    const vista = obtenerVistaDeEscena(currentScene);
+    // 4. Determinar vista actual usando la escena ya verificada
+    const vista = obtenerVistaDeEscena(escenaActual);
     console.log(`👁️ Vista actual: ${vista}`);
     
     // 4. Filtrar lotes para esta vista
@@ -411,8 +429,10 @@ export const inicializarSpotsSimple = async () => {
   // 1. Cargar y pintar spots iniciales
   const result = await cargarYPintarSpots();
   
-  // 2. Iniciar monitoreo de cambios de escena
+  // 2. Configurar listener para cambios automáticos de escena
   if (result.success) {
+    console.log('🎧 Configurando auto-recarga de spots...');
+    configurarListenerEscenas();
     iniciarMonitoreoEscena();
   }
   
@@ -423,6 +443,7 @@ export const inicializarSpotsSimple = async () => {
 window.cargarYPintarSpots = cargarYPintarSpots;
 window.inicializarSpotsSimple = inicializarSpotsSimple;
 window.verificarEstilosHotspots = verificarEstilosHotspots;
+window.configurarListenerEscenas = configurarListenerEscenas;
 
 // Función de debug para ver estructura de lotes
 window.verEstructuraLote = async (numero) => {
@@ -470,4 +491,57 @@ window.crearSpotsEstadosPrueba = async () => {
   });
   
   console.log('✅ Spots de prueba creados. Verifica los diferentes estilos.');
+};
+
+/**
+ * Configurar listener para cambios automáticos de escena
+ * Recarga spots cuando el usuario cambia de vista en el tour
+ */
+export const configurarListenerEscenas = () => {
+  const krpano = window.krpano;
+  if (!krpano) {
+    console.warn('⚠️ krpano no disponible para configurar listener');
+    return false;
+  }
+  
+  console.log('🎧 Configurando listener para cambios de escena...');
+  
+  try {
+    // Configurar onloadcomplete para detectar cambios de escena
+    krpano.call(`
+      set(events[onLoadCompleteSpots].name, onLoadCompleteSpots);
+      set(events[onLoadCompleteSpots].keep, true);
+      set(events[onLoadCompleteSpots].onloadcomplete, 
+        js(
+          if(krpano, 
+            js(
+              console.log('🔄 Escena cambiada, recargando spots...');
+              setTimeout(function() {
+                if(window.recargarSpotsActuales) {
+                  window.recargarSpotsActuales();
+                }
+              }, 500);
+            )
+          )
+        )
+      );
+    `);
+    
+    // Función global para recargar spots
+    window.recargarSpotsActuales = async () => {
+      try {
+        console.log('🔄 Recargando spots para nueva escena...');
+        await cargarYPintarSpots();
+      } catch (error) {
+        console.error('❌ Error recargando spots:', error);
+      }
+    };
+    
+    console.log('✅ Listener de escenas configurado correctamente');
+    return true;
+    
+  } catch (error) {
+    console.error('❌ Error configurando listener de escenas:', error);
+    return false;
+  }
 };
