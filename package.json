@@ -1,11 +1,12 @@
 {
   "name": "reserva-martin-pescador2",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:clean": "rm -rf dist && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

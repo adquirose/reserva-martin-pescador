@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "vite build && echo 'Build completed with cache busting'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

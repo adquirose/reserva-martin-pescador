@@ -1,0 +1,33 @@
+# Cache control headers para Render.com
+
+# Cache busting para HTML - siempre revalidar
+/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Assets estáticos con hash - cache largo (Render.com usa CDN)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Imágenes - cache moderado
+*.png
+  Cache-Control: public, max-age=86400
+*.jpg
+  Cache-Control: public, max-age=86400
+*.jpeg
+  Cache-Control: public, max-age=86400
+*.svg
+  Cache-Control: public, max-age=86400
+*.webp
+  Cache-Control: public, max-age=86400
+
+# Archivos de Krpano - cache corto
+/krpano/*
+  Cache-Control: public, max-age=3600
+
+# CSS y JS con hash
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+*.js
+  Cache-Control: public, max-age=31536000, immutable
