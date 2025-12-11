@@ -4,7 +4,6 @@ import { Box, Typography } from '@mui/material'
 import TourOverlay from '../TourOverlay'
 import FichaLote from '../FichaLote'
 import LoadingScreen from '../LoadingScreen'
-// TEMPORALMENTE COMENTADO - import { registerKrpanoSpotLoader } from '../../services/krpanoSpotsService'
 import { 
   mostrarFicha, 
   cerrarFicha, 
@@ -123,9 +122,6 @@ export const Krpano = () => {
                             // Exponer globalmente para acceso desde componentes
                             window.krpano = krpano_interface;
                             window.krpanoInstance = krpano_interface;
-                            
-                            // TEMPORALMENTE COMENTADO - Registrar funciones de carga de spots (legacy)
-                            // registerKrpanoSpotLoader();
                             
                             setLoadingMessage('Cargando spots...');
                             
