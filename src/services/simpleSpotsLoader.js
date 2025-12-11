@@ -7,61 +7,54 @@ let lotesCompletos = [];
 
 /**
  * Cargar spots desde Firestore y pintarlos directamente en krpano
- * CON VERIFICACIÓN DE ESCENA para evitar bugs en producción
+ * VERSIÓN SIMPLIFICADA Y ROBUSTA
  */
 export const cargarYPintarSpots = async () => {
   try {
     console.log('🎯 Cargando spots desde Firestore...');
     
-    // 1. VERIFICAR que krpano esté listo y la escena inicializada
+    // 1. Verificar krpano
     const krpano = window.krpano;
     if (!krpano) {
       console.error('❌ Krpano no disponible');
       return { success: false, message: 'Krpano no disponible' };
     }
     
-    // 2. Esperar a que la escena esté completamente cargada
-    let intentos = 0;
-    let escenaActual = null;
-    while (intentos < 10) {
-      escenaActual = krpano.get('xml.scene');
-      if (escenaActual && escenaActual !== 'null' && escenaActual !== '') {
-        break;
-      }
-      console.log(`⏳ Esperando escena... intento ${intentos + 1}`);
-      await new Promise(resolve => setTimeout(resolve, 200));
-      intentos++;
+    // 2. Obtener escena actual (con pequeña espera si es necesaria)
+    let currentScene = krpano.get('xml.scene');
+    if (!currentScene || currentScene === 'null' || currentScene === '') {
+      console.log('⏳ Esperando escena...');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      currentScene = krpano.get('xml.scene');
     }
     
-    if (!escenaActual || escenaActual === 'null') {
-      console.error('❌ No se pudo obtener la escena actual después de 2 segundos');
-      return { success: false, message: 'Escena no disponible' };
+    if (!currentScene || currentScene === 'null' || currentScene === '') {
+      console.warn('⚠️ Escena no disponible, usando vista por defecto');
+      currentScene = 'scene_e1'; // Fallback
     }
     
-    console.log(`🎬 Escena confirmada: ${escenaActual}`);
+    console.log(`🎬 Escena actual: ${currentScene}`);
     
-    // 3. Cargar todos los lotes desde Firestore
+    // 3. Cargar lotes desde Firestore
     const lotesCollection = collection(db, PROJECT_PATH, LOTES_COLLECTION);
     const snapshot = await getDocs(lotesCollection);
     
     if (snapshot.empty) {
-      console.warn('⚠️ No hay lotes en Firestore. Usar RepoblarDB para cargar datos desde XML.');
+      console.warn('⚠️ No hay lotes en Firestore');
       return { success: false, message: 'No hay datos en Firestore' };
     }
     
     const lotes = snapshot.docs.map(doc => ({
-      numero: doc.id,  // El documento usa numero como id
-      id: doc.id,      // Compatibilidad
+      numero: doc.id,
+      id: doc.id,
       ...doc.data()
     }));
     
-    // Guardar lotes en cache global para acceso en spotClicked
     lotesCompletos = lotes;
+    console.log(`📊 Lotes cargados: ${lotes.length}`);
     
-    console.log(`📊 Lotes cargados desde Firestore: ${lotes.length}`);
-    
-    // 4. Determinar vista actual usando la escena ya verificada
-    const vista = obtenerVistaDeEscena(escenaActual);
+    // 4. Determinar vista
+    const vista = obtenerVistaDeEscena(currentScene);
     console.log(`👁️ Vista actual: ${vista}`);
     
     // 4. Filtrar lotes para esta vista
@@ -426,17 +419,27 @@ export const iniciarMonitoreoEscena = () => {
 export const inicializarSpotsSimple = async () => {
   console.log('🚀 Inicializando sistema simple de spots...');
   
-  // 1. Cargar y pintar spots iniciales
-  const result = await cargarYPintarSpots();
-  
-  // 2. Configurar listener para cambios automáticos de escena
-  if (result.success) {
-    console.log('🎧 Configurando auto-recarga de spots...');
-    configurarListenerEscenas();
-    iniciarMonitoreoEscena();
+  try {
+    // 1. Cargar y pintar spots iniciales
+    const result = await cargarYPintarSpots();
+    
+    // 2. Si fue exitoso, configurar auto-recarga (opcional)
+    if (result.success) {
+      console.log('✅ Spots cargados correctamente');
+      
+      // Configurar listener (sin bloquear si falla)
+      try {
+        configurarListenerEscenas();
+      } catch (listenerError) {
+        console.warn('⚠️ No se pudo configurar listener automático:', listenerError);
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('❌ Error en inicializarSpotsSimple:', error);
+    return { success: false, message: error.message };
   }
-  
-  return result;
 };
 
 // Exponer funciones globalmente para debugging
