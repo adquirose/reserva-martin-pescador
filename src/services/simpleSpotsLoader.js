@@ -446,10 +446,12 @@ export const inicializarSpotsSimple = async () => {
     // 1. Cargar y pintar spots iniciales
     const result = await cargarYPintarSpots();
     
-    // 2. Si fue exitoso, NO configurar listener por ahora (evitar problemas)
+    // 2. Si fue exitoso, configurar monitoreo simple de cambios de escena
     if (result.success) {
       console.log('✅ Spots cargados correctamente');
-      console.log('ℹ️ Listener automático deshabilitado temporalmente');
+      
+      // Configurar monitoreo simple con setInterval
+      configurarMonitoreoEscena();
     }
     
     return result;
@@ -459,11 +461,85 @@ export const inicializarSpotsSimple = async () => {
   }
 };
 
+/**
+ * Configurar monitoreo simple de cambios de escena
+ * Usa setInterval para detectar cambios y recargar spots
+ */
+const configurarMonitoreoEscena = () => {
+  const krpano = window.krpano;
+  if (!krpano) {
+    console.warn('⚠️ krpano no disponible para monitoreo');
+    return;
+  }
+  
+  console.log('🎧 Configurando monitoreo simple de escena...');
+  
+  let escenaAnterior = krpano.get('xml.scene');
+  
+  // Verificar cambios de escena cada segundo
+  const intervalId = setInterval(() => {
+    try {
+      const escenaActual = krpano.get('xml.scene');
+      
+      if (escenaActual && escenaActual !== escenaAnterior && escenaActual !== 'null') {
+        console.log(`🔄 Cambio de escena detectado: ${escenaAnterior} → ${escenaActual}`);
+        escenaAnterior = escenaActual;
+        
+        // Recargar spots para la nueva escena con pequeño delay
+        setTimeout(async () => {
+          try {
+            console.log('🔄 Recargando spots para nueva escena...');
+            await cargarYPintarSpots();
+          } catch (error) {
+            console.error('❌ Error recargando spots:', error);
+          }
+        }, 500); // 500ms para que krpano complete la transición
+      }
+    } catch (error) {
+      console.error('❌ Error en monitoreo de escena:', error);
+    }
+  }, 1000); // Verificar cada segundo
+  
+  // Exponer función global para detener monitoreo si es necesario
+  window.detenerMonitoreoEscena = () => {
+    clearInterval(intervalId);
+    console.log('🛑 Monitoreo de escena detenido');
+  };
+  
+  console.log('✅ Monitoreo de escena configurado correctamente');
+};
+
 // Exponer funciones globalmente para debugging
 window.cargarYPintarSpots = cargarYPintarSpots;
 window.inicializarSpotsSimple = inicializarSpotsSimple;
 window.verificarEstilosHotspots = verificarEstilosHotspots;
 // window.configurarListenerEscenas se expone después de su definición
+
+// Función manual para recargar spots (útil en producción)
+window.recargarSpots = async () => {
+  console.log('🔄 Recarga manual de spots...');
+  try {
+    const result = await cargarYPintarSpots();
+    console.log('✅ Recarga completada:', result);
+    return result;
+  } catch (error) {
+    console.error('❌ Error en recarga manual:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Función manual para recargar spots (útil para testing)
+window.recargarSpots = async () => {
+  console.log('🔄 Recargando spots manualmente...');
+  try {
+    const result = await cargarYPintarSpots();
+    console.log('✅ Recarga manual completada:', result);
+    return result;
+  } catch (error) {
+    console.error('❌ Error en recarga manual:', error);
+    return { success: false, error: error.message };
+  }
+};
 
 // Función de debug para analizar spots faltantes
 window.debugSpotsFaltantes = async () => {
