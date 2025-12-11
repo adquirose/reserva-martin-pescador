@@ -446,20 +446,10 @@ export const inicializarSpotsSimple = async () => {
     // 1. Cargar y pintar spots iniciales
     const result = await cargarYPintarSpots();
     
-    // 2. Si fue exitoso, configurar auto-recarga (sin bloquear)
+    // 2. Si fue exitoso, NO configurar listener por ahora (evitar problemas)
     if (result.success) {
       console.log('✅ Spots cargados correctamente');
-      
-      // Configurar listener con setTimeout para evitar hoisting
-      setTimeout(() => {
-        try {
-          if (typeof configurarListenerEscenas === 'function') {
-            configurarListenerEscenas();
-          }
-        } catch (listenerError) {
-          console.warn('⚠️ No se pudo configurar listener automático:', listenerError);
-        }
-      }, 100);
+      console.log('ℹ️ Listener automático deshabilitado temporalmente');
     }
     
     return result;
@@ -473,7 +463,7 @@ export const inicializarSpotsSimple = async () => {
 window.cargarYPintarSpots = cargarYPintarSpots;
 window.inicializarSpotsSimple = inicializarSpotsSimple;
 window.verificarEstilosHotspots = verificarEstilosHotspots;
-window.configurarListenerEscenas = configurarListenerEscenas;
+// window.configurarListenerEscenas se expone después de su definición
 
 // Función de debug para analizar spots faltantes
 window.debugSpotsFaltantes = async () => {
@@ -615,3 +605,6 @@ export const configurarListenerEscenas = () => {
     return false;
   }
 };
+
+// Exponer configurarListenerEscenas después de su definición
+window.configurarListenerEscenas = configurarListenerEscenas;
