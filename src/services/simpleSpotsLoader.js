@@ -446,16 +446,20 @@ export const inicializarSpotsSimple = async () => {
     // 1. Cargar y pintar spots iniciales
     const result = await cargarYPintarSpots();
     
-    // 2. Si fue exitoso, configurar auto-recarga (opcional)
+    // 2. Si fue exitoso, configurar auto-recarga (sin bloquear)
     if (result.success) {
       console.log('✅ Spots cargados correctamente');
       
-      // Configurar listener (sin bloquear si falla)
-      try {
-        configurarListenerEscenas();
-      } catch (listenerError) {
-        console.warn('⚠️ No se pudo configurar listener automático:', listenerError);
-      }
+      // Configurar listener con setTimeout para evitar hoisting
+      setTimeout(() => {
+        try {
+          if (typeof configurarListenerEscenas === 'function') {
+            configurarListenerEscenas();
+          }
+        } catch (listenerError) {
+          console.warn('⚠️ No se pudo configurar listener automático:', listenerError);
+        }
+      }, 100);
     }
     
     return result;

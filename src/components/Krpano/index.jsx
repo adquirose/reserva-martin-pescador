@@ -124,8 +124,8 @@ export const Krpano = () => {
                             window.krpano = krpano_interface;
                             window.krpanoInstance = krpano_interface;
                             
-                            // Registrar funciones de carga de spots (legacy)
-                            registerKrpanoSpotLoader();
+                            // TEMPORALMENTE COMENTADO - Registrar funciones de carga de spots (legacy)
+                            // registerKrpanoSpotLoader();
                             
                             setLoadingMessage('Cargando spots...');
                             
