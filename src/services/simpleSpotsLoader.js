@@ -57,36 +57,59 @@ export const cargarYPintarSpots = async () => {
     const vista = obtenerVistaDeEscena(currentScene);
     console.log(`👁️ Vista actual: ${vista}`);
     
-    // 4. Filtrar lotes para esta vista
+    // 5. Filtrar lotes para esta vista
     const lotesVista = lotes.filter(lote => {
       const loteId = lote.numero || lote.id;
       
-      // Determinar vista basándose SOLO en el número del lote
-      const vistaCalculada = asignarVistaSegunNumero(loteId);
-      const vistaComparar = vistaCalculada.startsWith('vista') ? vistaCalculada : `vista${vistaCalculada}`;
+      // USAR LA VISTA GUARDADA EN FIREBASE, no calcular
+      const vistaLote = lote.vista ? `vista${lote.vista}` : null;
+      
+      // Si no tiene vista asignada, calcular como fallback
+      const vistaCalculada = vistaLote || (() => {
+        const vistaTemp = asignarVistaSegunNumero(loteId);
+        return vistaTemp.startsWith('vista') ? vistaTemp : `vista${vistaTemp}`;
+      })();
       
       // Verificar que tenga coordenadas para esta vista
-      const tieneCoords = lote.krpano?.[vistaComparar]?.ath !== null && lote.krpano?.[vistaComparar]?.atv !== null;
+      const tieneCoords = lote.krpano?.[vistaCalculada]?.ath !== null && 
+                          lote.krpano?.[vistaCalculada]?.atv !== null;
       
-      console.log(`🔍 Lote ${loteId}: vista=${vistaComparar}, actual=${vista}, coords=${tieneCoords}`);
+      const perteneceVista = vistaCalculada === vista;
       
-      return vistaComparar === vista && tieneCoords;
+      console.log(`🔍 Lote ${loteId}: fbVista=${lote.vista}, calc=${vistaCalculada}, actual=${vista}, coords=${tieneCoords}, match=${perteneceVista}`);
+      
+      return perteneceVista && tieneCoords;
     });
     
-    console.log(`🎯 Lotes para vista ${vista}: ${lotesVista.length}`);
-    console.log(`📋 IDs: ${lotesVista.map(l => l.id || l.numero).sort((a,b) => {
+    console.log(`🎯 Lotes para vista ${vista}: ${lotesVista.length} de ${lotes.length} total`);
+    
+    // Debug: mostrar distribución completa
+    const distribucionVistas = lotes.reduce((acc, lote) => {
+      const vistaLote = lote.vista ? `vista${lote.vista}` : 'sin_vista';
+      acc[vistaLote] = (acc[vistaLote] || 0) + 1;
+      return acc;
+    }, {});
+    console.log(`📊 Distribución total de lotes:`, distribucionVistas);
+    
+    console.log(`📋 Lotes en ${vista}: ${lotesVista.map(l => l.id || l.numero).sort((a,b) => {
       const numA = parseInt(a) || 999;
       const numB = parseInt(b) || 999;
       return numA - numB;
     }).join(', ')}`);
     
-    // Mostrar resumen de estados
-    const estadosResumen = lotesVista.reduce((acc, lote) => {
-      const estado = lote.estado || 'disponible';
-      acc[estado] = (acc[estado] || 0) + 1;
-      return acc;
-    }, {});
-    console.log(`📊 Estados en vista ${vista}:`, estadosResumen);
+    // Mostrar lotes que NO aparecen en esta vista para debug
+    const lotesExcluidos = lotes.filter(lote => {
+      const vistaLote = lote.vista ? `vista${lote.vista}` : null;
+      const vistaCalculada = vistaLote || (() => {
+        const vistaTemp = asignarVistaSegunNumero(lote.numero || lote.id);
+        return vistaTemp.startsWith('vista') ? vistaTemp : `vista${vistaTemp}`;
+      })();
+      return vistaCalculada !== vista;
+    });
+    
+    if (lotesExcluidos.length > 0) {
+      console.log(`🚫 Lotes excluidos de ${vista}: ${lotesExcluidos.map(l => `${l.id || l.numero}(${l.vista ? `vista${l.vista}` : 'sin_vista'})`).join(', ')}`);
+    }
     
     // 5. Verificar que los estilos estén disponibles
     const estilosDisponibles = verificarEstilosHotspots();
@@ -447,6 +470,46 @@ window.cargarYPintarSpots = cargarYPintarSpots;
 window.inicializarSpotsSimple = inicializarSpotsSimple;
 window.verificarEstilosHotspots = verificarEstilosHotspots;
 window.configurarListenerEscenas = configurarListenerEscenas;
+
+// Función de debug para analizar spots faltantes
+window.debugSpotsFaltantes = async () => {
+  console.log('🔍 === DEBUG DE SPOTS FALTANTES ===');
+  
+  const krpano = window.krpano;
+  if (!krpano) {
+    console.error('❌ Krpano no disponible');
+    return;
+  }
+  
+  const currentScene = krpano.get('xml.scene');
+  const vista = obtenerVistaDeEscena(currentScene);
+  
+  console.log(`🎬 Escena actual: ${currentScene} -> Vista: ${vista}`);
+  
+  if (lotesCompletos.length === 0) {
+    console.warn('⚠️ No hay lotes cargados en cache');
+    return;
+  }
+  
+  console.log(`📊 Total lotes en cache: ${lotesCompletos.length}`);
+  
+  // Analizar cada lote
+  lotesCompletos.forEach(lote => {
+    const loteId = lote.numero || lote.id;
+    const vistaLote = lote.vista ? `vista${lote.vista}` : null;
+    const vistaCalculada = vistaLote || asignarVistaSegunNumero(loteId);
+    const tieneKrpano = !!lote.krpano;
+    const tieneCoords = lote.krpano?.[vista]?.ath !== null && lote.krpano?.[vista]?.atv !== null;
+    
+    console.log(`📍 Lote ${loteId}: vista=${vistaLote || 'CALCULADA:' + vistaCalculada}, krpano=${tieneKrpano}, coords=${tieneCoords}, estado=${lote.estado}`);
+    
+    if (tieneKrpano && lote.krpano[vista]) {
+      console.log(`   -> Coords: ath=${lote.krpano[vista].ath}, atv=${lote.krpano[vista].atv}`);
+    }
+  });
+  
+  console.log('🔍 === FIN DEBUG ===');
+};
 
 // Función de debug para ver estructura de lotes
 window.verEstructuraLote = async (numero) => {
