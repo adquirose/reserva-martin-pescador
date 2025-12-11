@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 import TourOverlay from '../TourOverlay'
 import FichaLote from '../FichaLote'
 import LoadingScreen from '../LoadingScreen'
-import { registerKrpanoSpotLoader } from '../../services/krpanoSpotsService'
+// TEMPORALMENTE COMENTADO - import { registerKrpanoSpotLoader } from '../../services/krpanoSpotsService'
 import { 
   mostrarFicha, 
   cerrarFicha, 
