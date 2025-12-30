@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import WhatsappFloatingButton from '../WhatsappFloatingButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import TourOverlay from '../TourOverlay'
@@ -32,7 +33,8 @@ export const Krpano = () => {
             // Aquí podríamos manejar acciones específicas del mapa si fuera necesario
         }
         return () => { delete window.toggleMapFromKrpano }
-    }, [])
+    }
+    , [])
 
     // Configurar Redux para ficha
     useEffect(() => {
@@ -82,14 +84,13 @@ export const Krpano = () => {
     // Montar krpano al cargar el componente - EXACTO como en fundo-refugia
     useEffect(() => {
         setLoadingMessage('Cargando recursos del tour...');
-        
         if (!krpanoContainerRef.current) {
             console.error('krpanoContainerRef.current no existe');
             setIsLoading(false);
             return;
         }
         krpanoContainerRef.current.innerHTML = '';
-        
+
         // Verificar tamaño del contenedor
         setTimeout(() => {
             if (krpanoContainerRef.current) {
@@ -101,11 +102,10 @@ export const Krpano = () => {
                 }
             }
         }, 100);
-        
+
         // Función para inicializar krpano - EXACTO como en fundo-refugia
         const initKrpano = () => {
             setLoadingMessage('Inicializando tour virtual...');
-            
             setTimeout(() => {
                 if (window.embedpano && krpanoContainerRef.current) {
                     window.embedpano({
@@ -117,47 +117,32 @@ export const Krpano = () => {
                         height: '100%',
                         passQueryParameters: true,
                         onready: (krpano_interface) => {
-                            krpanoObj.current = krpano_interface
-                            
+                            krpanoObj.current = krpano_interface;
                             // Exponer globalmente para acceso desde componentes
                             window.krpano = krpano_interface;
                             window.krpanoInstance = krpano_interface;
-                            
                             setLoadingMessage('Cargando spots...');
-                            
                             // ⭐ NUEVO: Inicializar sistema simple de spots
                             setTimeout(async () => {
                                 try {
                                     const { inicializarSpotsSimple } = await import('../../services/simpleSpotsLoader.js');
                                     const resultado = await inicializarSpotsSimple();
                                     console.log('🎯 Sistema simple de spots inicializado:', resultado);
-                                    
-                                    // Ocultar loading cuando todo esté listo
-                                    setIsLoading(false);
                                 } catch (error) {
                                     console.error('❌ Error inicializando spots simples:', error);
-                                    setIsLoading(false);
                                 }
-                            }, 1000); // Delay para asegurar que krpano esté completamente listo
-                            
-                            console.log('🎯 Krpano listo con servicio de spots');
+                                setIsLoading(false);
+                            }, 50);
                         }
-                    })
-                } else {
-                    console.error('window.embedpano no está disponible')
-                    if (krpanoContainerRef.current) {
-                        krpanoContainerRef.current.innerHTML = '<div style="color:red;padding:20px;">Error: No se pudo inicializar krpano. Revisa la consola.</div>';
-                    }
-                    setIsLoading(false);
+                    });
                 }
-            }, 50)
-        }
+            }, 50);
+        };
 
         // Cargar script solo si no está cargado - EXACTO como en fundo-refugia
         if (!scriptLoadedRef.current) {
             scriptLoadedRef.current = true;
             setLoadingMessage('Cargando librerías de krpano...');
-            
             const script = document.createElement('script');
             script.src = '/krpano/tour.js';
             script.onload = () => {
@@ -181,8 +166,8 @@ export const Krpano = () => {
                 window.removepano(krpanoObj.current.get('id'));
                 krpanoObj.current = null;
             }
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -198,6 +183,9 @@ export const Krpano = () => {
             
             {/* Overlay de controles encima del tour */}
             <TourOverlay />
+            
+            {/* Botón flotante de WhatsApp */}
+            <WhatsappFloatingButton />
             
             {/* Footer con logo del proyecto */}
             {!isLoading && !hideProjectLogo && (

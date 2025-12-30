@@ -900,10 +900,12 @@
 			set(layer[skin_thumbs_container].visible, true);
 			tween(layer[skin_thumbs_container].alpha, 1.0, 0.25);
 			tween(layer[skin_map].alpha, 0.0, 0.25, default, set(layer[skin_map].visible,false));
+			jscall("console.log('KRPANO: THUMBS SHOW'); window.dispatchEvent(new CustomEvent('krpano-thumbs-show'));");
 		  ,
 			set(layer[skin_thumbs].state, 'closed');
 			tween(layer[skin_thumbs].alpha, 0.0, 0.25, easeOutQuint);
 			tween(layer[skin_scroll_layer].y, calc(-area.pixelheight + layer[skin_scroll_layer].y_offset), 0.5, easeOutQuint, set(layer[skin_thumbs_container].visible, false););
+			jscall("console.log('KRPANO: THUMBS HIDE'); window.dispatchEvent(new CustomEvent('krpano-thumbs-hide'));");
 		);
 	</action>
 

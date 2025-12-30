@@ -122,10 +122,6 @@
 		loadscene(get(startscene), null, MERGE);
 	</action>
 
-	<!-- Acción de prueba para debugging -->
-	<action name="test_spots">
-		<!-- Logs disabled for production -->
-	</action>
 
 
 
