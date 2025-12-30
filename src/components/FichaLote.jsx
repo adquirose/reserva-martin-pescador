@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -18,8 +18,11 @@ import {
   RequestQuote as PriceIcon
 } from '@mui/icons-material';
 import ImageCarousel from './ImageCarousel';
+import FormularioContacto from './FormularioContacto';
 
 const FichaLote = ({ lote, onClose, open }) => {
+  const [formularioAbierto, setFormularioAbierto] = useState(false);
+  
   if (!open || !lote) return null;
 
   // Determinar color del estado
@@ -33,6 +36,7 @@ const FichaLote = ({ lote, onClose, open }) => {
   };
 
   return (
+    <>
     <Box
       sx={{
         position: 'fixed',
@@ -144,11 +148,9 @@ const FichaLote = ({ lote, onClose, open }) => {
               variant="contained" 
               color="primary" 
               fullWidth
-              onClick={() => {
-                // Aquí se podría implementar lógica de contacto/reserva
-              }}
+              onClick={() => setFormularioAbierto(true)}
             >
-              Consultar Disponibilidad
+              Más Información
             </Button>
           )}
           
@@ -157,11 +159,9 @@ const FichaLote = ({ lote, onClose, open }) => {
               variant="outlined" 
               color="warning" 
               fullWidth
-              onClick={() => {
-                // Acción de consulta
-              }}
+              onClick={() => setFormularioAbierto(true)}
             >
-              Consultar Reserva
+              Más Información
             </Button>
           )}
 
@@ -178,6 +178,14 @@ const FichaLote = ({ lote, onClose, open }) => {
         </CardActions>
       </Card>
     </Box>
+      
+    {/* Formulario de contacto - Fuera del contenedor principal */}
+    <FormularioContacto 
+      open={formularioAbierto}
+      onClose={() => setFormularioAbierto(false)}
+      lote={lote}
+    />
+    </>
   );
 };
 
