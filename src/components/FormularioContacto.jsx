@@ -182,8 +182,8 @@ const FormularioContacto = ({ open, onClose, lote }) => {
           superficie: lote?.superficie || lote?.area || 'Por consultar'
         };
         
-        // Destinatario para desarrollo
-        const destinatarios = ['adquirose@gmail.com'];
+        // Destinatarios de producción
+        const destinatarios = ['vhernandez@hfo.cl', 'huillinco@grupomartinpescador.cl'];
         
         const emailResult = await enviarConsultaLoteHTTP(loteData, destinatarios);
         

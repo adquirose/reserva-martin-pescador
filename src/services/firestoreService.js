@@ -351,7 +351,7 @@ export const initializeProjectData = async () => {
         descripcion: detalleParc.titulo || `Lote ${spot.numero} - Vista ${spot.vista}`,
         superficie: detalleParc.superficie || null,
         metrosOrilla: detalleParc.metrosOrilla || 0,
-        precio: detalleParc.precio || 'Consultar precio a reservamartinpescador@gmail.com',
+        precio: detalleParc.precio || 'Consultar precio a huillinco@grupomartinpescador.cl',
         estadoDetallado: detalleParc.estado || spot.estado,
         fechaCreacion: new Date(),
         fechaActualizacion: new Date()

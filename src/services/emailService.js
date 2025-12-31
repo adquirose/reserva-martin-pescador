@@ -59,7 +59,7 @@ export class EmailService {
       
       const {
         contactoData,
-        destinatarios = ['andrea@lanube360.cl'],
+        destinatarios = ['vhernandez@hfo.cl', 'huillinco@grupomartinpescador.cl'],
         prefijo_asunto = '[MARTIN PESCADOR]',
         campos_adicionales = {},
         template_personalizado = null
@@ -133,7 +133,7 @@ export class EmailService {
   static async enviarConsultaLote(loteData) {
     const contactoData = {
       nombre: loteData.nombre,
-      email: 'cliente.martinpescador@gmail.com', // Email válido para testing
+      email: 'info@martinpescador.cl', // Email de producción
       telefono: loteData.telefono,
       rut: loteData.rut,
       empresa: 'Proyecto Martin Pescador',
@@ -161,7 +161,7 @@ export class EmailService {
     return await this.enviarFormulario({
       contactoData,
       campos_adicionales,
-      destinatarios: ['andrea@lanube360.cl'] // Un solo destinatario para testing
+      destinatarios: ['vhernandez@hfo.cl', 'huillinco@grupomartinpescador.cl'] // Destinatarios de producción
     });
   }
 
@@ -173,7 +173,7 @@ export class EmailService {
   static async enviarConsultaGeneral(consultaData) {
     const contactoData = {
       nombre: consultaData.nombre,
-      email: consultaData.email || 'consulta.martinpescador@gmail.com',
+      email: consultaData.email || 'info@martinpescador.cl',
       telefono: consultaData.telefono,
       rut: consultaData.rut,
       empresa: 'Consulta General Martin Pescador',
@@ -190,7 +190,7 @@ export class EmailService {
       contactoData,
       campos_adicionales,
       prefijo_asunto: '[CONSULTA GENERAL]',
-      destinatarios: ['andrea@lanube360.cl'] // Solo un destinatario válido para testing
+      destinatarios: ['vhernandez@hfo.cl', 'huillinco@grupomartinpescador.cl'] // Destinatarios de producción
     });
   }
 }

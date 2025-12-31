@@ -40,7 +40,7 @@ export const enviarFormEmailHTTP = async (emailData) => {
 /**
  * Función simplificada para consultas de lote usando HTTP directo con sendFormEmail
  */
-export const enviarConsultaLoteHTTP = async (loteData, destinatarios = ['adquirose@gmail.com']) => {
+export const enviarConsultaLoteHTTP = async (loteData, destinatarios = ['vhernandez@hfo.cl', 'huillinco@grupomartinpescador.cl']) => {
   
   // Template personalizado con solo los campos necesarios
   const templatePersonalizado = `
@@ -69,7 +69,7 @@ export const enviarConsultaLoteHTTP = async (loteData, destinatarios = ['adquiro
 
   const emailData = {
     nombre: loteData.nombre,
-    email: 'cliente.martinpescador@gmail.com',
+    email: 'info@martinpescador.cl',
     telefono: loteData.telefono || '',
     rut: loteData.rut || '',
     empresa: 'Proyecto Martin Pescador',
