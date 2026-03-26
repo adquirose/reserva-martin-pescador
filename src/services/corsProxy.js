@@ -4,7 +4,7 @@ class CorsProxyService {
     // URLs base para diferentes proyectos
     this.endpoints = {
       fundodehesa: 'https://lanube360.com/fundodehesa360',
-      martinpescador: 'https://lanube360.com/temporales/reserva-martin-pescador2'
+      martinpescador: 'https://www.lanube360.com/reserva-martin-pescador'
     };
   }
 

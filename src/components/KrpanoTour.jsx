@@ -96,7 +96,7 @@ const KrpanoTour = () => {
         }
 
         const script = document.createElement('script');
-        script.src = '/krpano/tour.js';
+        script.src = 'https://www.lanube360.com/reserva-martin-pescador/tour.js';
         script.onload = resolve;
         script.onerror = () => reject(new Error('Error cargando script de Krpano'));
         document.head.appendChild(script);
@@ -137,8 +137,8 @@ const KrpanoTour = () => {
 
           // Configuración del tour de Krpano
           window.embedpano({
-            swf: "/krpano/tour.swf",
-            xml: "/krpano/tour.xml",
+            swf: "https://www.lanube360.com/reserva-martin-pescador/tour.swf",
+            xml: "https://www.lanube360.com/reserva-martin-pescador/tour.xml",
             target: containerId.current,
             html5: "prefer",
             passQueryParameters: true,

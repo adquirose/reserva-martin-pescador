@@ -42,7 +42,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api/panos': {
-        target: 'https://lanube360.com/temporales/reserva-martin-pescador2',
+        target: 'https://www.lanube360.com/reserva-martin-pescador',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/panos/, '/panos'),
         secure: true

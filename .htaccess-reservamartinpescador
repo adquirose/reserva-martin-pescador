@@ -1,0 +1,117 @@
+# ===============================================
+# HTACCESS PARA www.reservamartinpescador.cl
+# Configuración específica para React SPA
+# ===============================================
+
+# Habilitar RewriteEngine
+RewriteEngine On
+
+# ===============================================
+# REACT ROUTER SPA ROUTING
+# Redirigir todas las rutas a index.html
+# ===============================================
+
+# NO redirigir si el archivo o directorio existe físicamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# NO redirigir archivos estáticos (CSS, JS, imágenes, etc.)
+RewriteCond %{REQUEST_URI} !\.(js|css|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot|pdf|zip|xml|json|webp|avif)$ [NC]
+
+# NO redirigir directorios específicos si los tienes
+RewriteCond %{REQUEST_URI} !^/api/ [NC]
+RewriteCond %{REQUEST_URI} !^/assets/ [NC]
+
+# Redirigir everything else a index.html para React Router
+RewriteRule ^(.*)$ /index.html [QSA,L]
+
+# ===============================================
+# OPTIMIZACIÓN DE CACHE
+# ===============================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Assets estáticos - Cache largo
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    
+    # Imágenes - Cache medio
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/avif "access plus 1 month"
+    
+    # Fuentes - Cache largo
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML - Sin cache (para SPA updates)
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# ===============================================
+# COMPRESIÓN GZIP
+# ===============================================
+<IfModule mod_deflate.c>
+    # Comprimir texto, html, javascript, css, xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# ===============================================
+# HEADERS DE SEGURIDAD
+# ===============================================
+<IfModule mod_headers.c>
+    # Prevenir XSS attacks
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Prevenir MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Control de frames (prevenir clickjacking)
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Content Security Policy básico (ajustar según necesidades)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.lanube360.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: *.lanube360.com; font-src 'self' data:; connect-src 'self' *.lanube360.com;"
+    
+    # Remover headers que revelan info del servidor
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# ===============================================
+# OPTIMIZACIONES ADICIONALES
+# ===============================================
+
+# Evitar que se acceda a archivos sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Proteger archivos de configuración
+<Files ~ "^(package\.json|\.env.*|\.git.*|README\.md)$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# ===============================================
+# ERROR PAGES PERSONALIZADAS (OPCIONAL)
+# ===============================================
+# ErrorDocument 404 /index.html
+# ErrorDocument 403 /index.html

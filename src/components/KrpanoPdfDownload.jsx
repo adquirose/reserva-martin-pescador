@@ -5,7 +5,7 @@ import { PictureAsPdf as PdfIcon } from '@mui/icons-material';
 const KrpanoPdfDownload = () => {
   const handleDownloadPdf = () => {
     // URL del PDF del brochure
-    const pdfUrl = 'https://lanube360.com/temporales/reserva-martin-pescador2/skin/brochure_RMP_2025.pdf';
+    const pdfUrl = 'https://www.lanube360.com/reserva-martin-pescador/skin/brochure_RMP_2025.pdf';
     
     // Abrir el PDF en una nueva pestaña
     window.open(pdfUrl, '_blank', 'noopener,noreferrer');

@@ -1,50 +1,94 @@
-# Configuración CORS para permitir acceso desde la aplicación
+# ===============================================
+# CORS MULTI-PROYECTOS - MARTIN PESCADOR + FUNDO DE HESA + TREBOL LOTEADORA
+# Soporte para múltiples aplicaciones React
+# ===============================================
+
 <IfModule mod_headers.c>
-    # 🔧 CORREGIDO: Agregar el dominio de producción fundo-la-dehesa.onrender.com
-    SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
-    SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" CORS_ORIGIN=https://lanube360-dev.onrender.com
-    SetEnvIf Origin "^http://localhost:5173$" CORS_ORIGIN=http://localhost:5173
-    SetEnvIf Origin "^https://localhost:5173$" CORS_ORIGIN=https://localhost:5173
-    SetEnvIf Origin "^http://127\.0\.0\.1:5173$" CORS_ORIGIN=http://127.0.0.1:5173
-    
-    # 🔧 Usar Header set (no always set) para evitar duplicados
-    Header set Access-Control-Allow-Origin "%{CORS_ORIGIN}e" env=CORS_ORIGIN
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
-    Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    Header set Access-Control-Max-Age "1728000"
-    
-    # 🔧 Manejar preflight requests con sintaxis compatible
-    <IfModule mod_rewrite.c>
-        RewriteCond %{REQUEST_METHOD} OPTIONS
-        RewriteRule ^(.*)$ - [E=CORS_ORIGIN:%{HTTP:Origin},R=200,L]
-    </IfModule>
+    # CRÍTICO: Limpiar headers heredados del padre
+    Header unset Access-Control-Allow-Origin
+    Header unset Access-Control-Allow-Methods
+    Header unset Access-Control-Allow-Headers
+    Header unset Access-Control-Max-Age
+
+    # Para archivos del tour (ambos proyectos)
+    <FilesMatch "\.(jpg|jpeg|png|xml|js|swf)$">
+        # Detectar origen y establecer variable para cada proyecto
+        SetEnvIf Origin "^http://localhost:5173$" CORS_ORIGIN=http://localhost:5173
+        SetEnvIf Origin "^http://localhost:5174$" CORS_ORIGIN=http://localhost:5174
+        
+        # DESARROLLO MÓVIL: IP específica puerto 5173 (prioritario)
+        SetEnvIf Origin "^http://192\.168\.100\.144:5173$" CORS_ORIGIN=http://192.168.100.144:5173
+        
+        # DESARROLLO MÓVIL: Backup para tu IP con cualquier puerto 517X
+        SetEnvIf Origin "^http://192\.168\.100\.144:517[0-9]$" CORS_ORIGIN=$0
+        
+        # DESARROLLO MÓVIL: Otras IPs de red local (usar valor literal)
+        SetEnvIf Origin "^(http://192\.168\.[0-9]+\.[0-9]+:517[0-9])$" CORS_ORIGIN=$1
+        SetEnvIf Origin "^(http://10\.[0-9]+\.[0-9]+\.[0-9]+:517[0-9])$" CORS_ORIGIN=$1
+        SetEnvIf Origin "^(http://172\.(1[6-9]|2[0-9]|3[01])\.[0-9]+\.[0-9]+:517[0-9])$" CORS_ORIGIN=$1
+        
+        SetEnvIf Origin "^https://reserva-martin-pescador\.onrender\.com$" CORS_ORIGIN=https://reserva-martin-pescador.onrender.com
+        SetEnvIf Origin "^https://www\.reservamartinpescador\.cl$" CORS_ORIGIN=https://www.reservamartinpescador.cl
+        SetEnvIf Origin "^https://reservamartinpescador\.cl$" CORS_ORIGIN=https://reservamartinpescador.cl
+        SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
+        SetEnvIf Origin "^https://godai-reserve\.onrender\.com$" CORS_ORIGIN=https://godai-reserve.onrender.com
+        SetEnvIf Origin "^https://el-americano\.onrender\.com$" CORS_ORIGIN=https://el-americano.onrender.com
+        SetEnvIf Origin "^https://trebol-loteadora\.onrender\.com$" CORS_ORIGIN=https://trebol-loteadora.onrender.com
+        SetEnvIf Origin "^https://trebolote\.com\.py$" CORS_ORIGIN=https://trebolote.com.py
+        SetEnvIf Origin "^https://www\.trebolote\.com\.py$" CORS_ORIGIN=https://www.trebolote.com.py
+        
+        # Aplicar headers CORS solo si hay origen válido
+        Header onsuccess set Access-Control-Allow-Origin "%{CORS_ORIGIN}e" env=CORS_ORIGIN
+        Header onsuccess set Access-Control-Allow-Methods "GET, HEAD, OPTIONS" env=CORS_ORIGIN
+        Header onsuccess set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept" env=CORS_ORIGIN
+        Header onsuccess set Access-Control-Max-Age "86400" env=CORS_ORIGIN
+        
+        # FALLBACK: Si la configuración variable no funciona, usar esto:
+        # Header onsuccess set Access-Control-Allow-Origin "*"
+        # Header onsuccess set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        # Header onsuccess set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
+    </FilesMatch>
 </IfModule>
 
-# 🔧 Configuración específica para archivos XML y recursos de Krpano
-<FilesMatch "\.(xml|js|swf|png|jpg|jpeg|gif)$">
-    <IfModule mod_headers.c>
-        # Para archivos específicos de Krpano - agregar el nuevo dominio
-        SetEnvIf Origin "^https://fundo-la-dehesa\.onrender\.com$" FILE_CORS_ORIGIN=https://fundo-la-dehesa.onrender.com
-        SetEnvIf Origin "^https://lanube360-dev\.onrender\.com$" FILE_CORS_ORIGIN=https://lanube360-dev.onrender.com
-        SetEnvIf Origin "^http://localhost:5173$" FILE_CORS_ORIGIN=http://localhost:5173
-        Header set Access-Control-Allow-Origin "%{FILE_CORS_ORIGIN}e" env=FILE_CORS_ORIGIN
-        Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
-    </IfModule>
-</FilesMatch>
-
-# Configuración de rewrite para SPA
+# Preflight requests para ambos proyectos
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
-    
-    # 🔧 Manejar OPTIONS requests para CORS
     RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteCond %{REQUEST_URI} \.(jpg|jpeg|png|xml|js|swf)$ [NC]
     RewriteRule ^(.*)$ - [R=200,L]
+</IfModule>
+
+# Cache optimizado
+<IfModule mod_expires.c>
+    ExpiresActive On
+    <FilesMatch "\.(jpg|jpeg|png)$">
+        ExpiresDefault "access plus 7 days"
+    </FilesMatch>
+    <FilesMatch "\.(xml|js)$">
+        ExpiresDefault "access plus 1 hour"
+    </FilesMatch>
+</IfModule>
+
+# ===============================================
+# REACT ROUTER SPA CONFIGURATION
+# Redirigir todas las rutas a index.html para React Router
+# ===============================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
     
-    # Reglas existentes para SPA
-    RewriteRule ^index\.html$ - [L]
+    # Manejar Angular y React Router
+    # NO redirigir si el archivo/directorio existe
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-l
-    RewriteRule . /index.html [L]
+    
+    # NO redirigir archivos estáticos
+    RewriteCond %{REQUEST_URI} !\.(js|css|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot|pdf|zip|xml|json)$ [NC]
+    
+    # NO redirigir APIs o directorios especiales
+    RewriteCond %{REQUEST_URI} !^/api/ [NC]
+    RewriteCond %{REQUEST_URI} !^/assets/ [NC]
+    RewriteCond %{REQUEST_URI} !^/krpano/ [NC]
+    
+    # Redirigir todo lo demás a index.html para React Router
+    RewriteRule ^(.*)$ /index.html [QSA,L]
 </IfModule>

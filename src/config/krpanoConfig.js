@@ -1,17 +1,17 @@
 // Configuración de entorno para rutas de imágenes Krpano
 export const KRPANO_CONFIG = {
-  // En desarrollo, usar servidor local si está disponible, sino usar servidor externo
+  // En desarrollo, usar servidor remoto actualizado
   development: {
     baseUrl: import.meta.env.VITE_USE_LOCAL_IMAGES === 'true' 
       ? '' // Rutas locales relativas
-      : 'https://lanube360.com/temporales/reserva-martin-pescador2', // Servidor externo
-    fallbackUrl: 'https://lanube360.com/temporales/reserva-martin-pescador2' // Fallback
+      : 'https://www.lanube360.com/reserva-martin-pescador', // Nueva URL del servidor
+    fallbackUrl: 'https://www.lanube360.com/reserva-martin-pescador' // Nueva URL de fallback
   },
   
-  // En producción, siempre usar servidor externo
+  // En producción, usar nueva URL del servidor
   production: {
-    baseUrl: 'https://lanube360.com/temporales/reserva-martin-pescador2',
-    fallbackUrl: 'https://lanube360.com/temporales/reserva-martin-pescador2'
+    baseUrl: 'https://www.lanube360.com/reserva-martin-pescador',
+    fallbackUrl: 'https://www.lanube360.com/reserva-martin-pescador'
   }
 };
 

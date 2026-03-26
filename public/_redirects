@@ -1,2 +1,12 @@
-# Redirects para Render.com SPA
+# ===============================================
+# REACT SPA ROUTING REDIRECTS
+# Para servidores que soportan archivo _redirects
+# (Netlify, Vercel, algunos CDNs)
+# ===============================================
+
+# Redirigir todas las rutas que no sean archivos a index.html
 /*    /index.html   200
+
+# Reglas específicas para archivos estáticos (opcional)
+/assets/*  /assets/:splat  200
+/krpano/*  /krpano/:splat  200
