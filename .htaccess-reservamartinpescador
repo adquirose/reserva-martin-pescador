@@ -86,8 +86,8 @@ RewriteRule ^(.*)$ /index.html [QSA,L]
     # Control de frames (prevenir clickjacking)
     Header always set X-Frame-Options "SAMEORIGIN"
     
-    # Content Security Policy básico (ajustar según necesidades)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.lanube360.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: *.lanube360.com; font-src 'self' data:; connect-src 'self' *.lanube360.com;"
+    # Content Security Policy actualizado para Firebase
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.lanube360.com *.googleapis.com *.gstatic.com; style-src 'self' 'unsafe-inline' *.googleapis.com; img-src 'self' data: *.lanube360.com *.googleapis.com *.gstatic.com *.google.com; font-src 'self' data: *.googleapis.com *.gstatic.com; connect-src 'self' *.lanube360.com *.googleapis.com *.firestore.googleapis.com wss://*.firestore.googleapis.com *.google.com *.cloudfunctions.net;"
     
     # Remover headers que revelan info del servidor
     Header unset Server
