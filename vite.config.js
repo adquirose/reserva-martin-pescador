@@ -5,34 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Configuraciones para producción
-    minify: 'terser',
-    // Habilitar cache busting automático
+    // Configuración simplificada para resolver el problema de rendering chunks
+    minify: 'esbuild', // Cambiar de terser a esbuild que es más rápido
     rollupOptions: {
       output: {
-        // Generar nombres únicos con hash para cache busting
+        // Configuración más simple
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.');
-          const ext = info[info.length - 1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
-            return `assets/images/[name]-[hash][extname]`;
-          }
-          if (/css/i.test(ext)) {
-            return `assets/css/[name]-[hash][extname]`;
-          }
-          return `assets/[name]-[hash][extname]`;
-        }
-      }
-    },
-    terserOptions: {
-      compress: {
-        // Eliminar todos los console.* en producción
-        drop_console: true,
-        drop_debugger: true,
-        // Eliminar logs específicos
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
+        assetFileNames: 'assets/[name]-[hash][extname]'
       }
     }
   },
